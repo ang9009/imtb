@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import supabase from "../lib/supabase";
 
 const Index = () => {
-  return (
-      <>
-        <h1>test</h1>
-      </>
-  );
+  return <></>;
 };
 
 export default Index;
