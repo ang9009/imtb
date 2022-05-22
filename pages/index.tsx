@@ -1,8 +1,13 @@
 import React, { useEffect } from "react";
 import supabase from "../lib/supabase";
+import Hero from "../components/Hero";
 
-const Index = () => {
-  return <></>;
+const HomePage = () => {
+  return (
+    <>
+      <Hero />
+    </>
+  );
 };
 
-export default Index;
+export default HomePage;
