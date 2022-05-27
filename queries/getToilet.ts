@@ -6,7 +6,7 @@ const getToilet = async (toiletId: string) => {
     .from<Toilet>("toilets")
     .select("*")
     .eq("id", toiletId)
-    .single();
+    .maybeSingle();
   return result;
 };
 

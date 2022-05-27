@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePicture from "./ProfilePicture";
+import AuthButton from "./AuthButton";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -10,10 +10,12 @@ const Navbar = () => {
           <h1 className="logo">IMTb</h1>
         </div>
         <ul>
-          <Link href={`/`}>Home</Link>
+          <li>
+            <Link href={`/`}>Home</Link>
+          </li>
           <li>Map</li>
           <li>
-            <ProfilePicture />
+            <AuthButton />
           </li>
         </ul>
       </div>
