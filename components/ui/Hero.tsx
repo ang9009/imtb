@@ -18,11 +18,11 @@ const Hero = () => {
           </div>
           <div className="widgets-container">
             <div className="toilet-map">
-              <img src="" alt="" />
+              <img src="components/ui/Hero" alt="" />
               <h1>View toilet map</h1>
             </div>
             <div className="leaderboards">
-              <img src="" alt="" />
+              <img src="components/ui/Hero" alt="" />
               <h1>View leaderboards</h1>
             </div>
           </div>

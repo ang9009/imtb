@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
-import supabase from "../lib/supabase";
-import Hero from "../components/Hero";
-import ToiletSection from "../components/ToiletSection";
+import Hero from "../components/ui/Hero";
+import ToiletSection from "../components/ui/ToiletSection";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
-import getToilet from "../queries/getToilet";
 import getToilets from "../queries/getToilets";
 
 const HomePage: React.FC = () => {

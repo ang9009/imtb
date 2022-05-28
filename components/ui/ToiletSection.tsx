@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import Toilet from "../types/toilet.interface";
-import capitalise from "../utils/capitalise";
+import Toilet from "../../types/Toilet.interface";
+import capitalise from "../../utils/capitalise";
 import { useQuery } from "react-query";
-import getToilets from "../queries/getToilets";
+import getToilets from "../../queries/getToilets";
 
 const ToiletSection = () => {
   const {

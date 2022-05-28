@@ -7,12 +7,11 @@ const Navbar = () => {
     <>
       <div className="nav-container">
         <div>
-          <h1 className="logo">IMTb</h1>
+          <Link href={`/`}>
+            <h1 className="logo">IMTb</h1>
+          </Link>
         </div>
         <ul>
-          <li>
-            <Link href={`/`}>Home</Link>
-          </li>
           <li>Map</li>
           <li>
             <AuthButton />
@@ -31,6 +30,7 @@ const Navbar = () => {
 
         .logo {
           font-size: 25px;
+          cursor: pointer;
         }
 
         ul {
