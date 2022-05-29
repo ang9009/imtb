@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import L from "leaflet";
 import osmProviders from "../../config/osm-providers";
 import useGeoLocation from "../../hooks/useGeoLocation";
 import { useRouter } from "next/router";
-import { GetServerSideProps } from "next";
 import { useQuery } from "react-query";
 import getAllToilets from "../../queries/getAllToilets";
 import markerIcon from "../../config/markerIcon";
@@ -11,8 +11,9 @@ import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
 
 const Map = () => {
   const center = useGeoLocation();
-
   const router = useRouter();
+
+  const mapRef = useRef<L.Map>(null);
 
   useEffect(() => {
     if (center.loaded && center.error) {
@@ -38,18 +39,22 @@ const Map = () => {
 
     console.log(toiletsDistance);
 
-    const nearestToiletKey = Object.keys(toiletsDistance).reduce((a, b) =>
+    const nearestToiletId = Object.keys(toiletsDistance).reduce((a, b) =>
       toiletsDistance[a] > toiletsDistance[b] ? b : a
     );
 
-    console.log(nearestToiletKey);
+    const nearestToilet = toilets.find(
+      (toilet) => toilet.id === nearestToiletId
+    );
+
+    mapRef.current.flyTo({ lat: nearestToilet.lat, lng: nearestToilet.lng });
   };
 
   return (
     <>
       <div>
         {center.loaded && (
-          <MapContainer zoom={30} center={center.coordinates}>
+          <MapContainer ref={mapRef} zoom={30} center={center.coordinates}>
             <TileLayer
               url={osmProviders.maptiler.url}
               attribution={osmProviders.maptiler.attribution}
