@@ -37,8 +37,6 @@ const Map = () => {
       );
     });
 
-    console.log(toiletsDistance);
-
     const nearestToiletId = Object.keys(toiletsDistance).reduce((a, b) =>
       toiletsDistance[a] > toiletsDistance[b] ? b : a
     );
@@ -47,7 +45,10 @@ const Map = () => {
       (toilet) => toilet.id === nearestToiletId
     );
 
-    mapRef.current.flyTo({ lat: nearestToilet.lat, lng: nearestToilet.lng });
+    mapRef.current.flyTo(
+      { lat: nearestToilet.lat, lng: nearestToilet.lng },
+      18
+    );
   };
 
   return (

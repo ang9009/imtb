@@ -1,5 +1,7 @@
 import degToRad from "./degToRad";
 
+// using Haversine formula
+
 const findDistanceBetweenCoords = (
   lat1: number,
   lng1: number,
