@@ -1,5 +1,5 @@
 export default interface Toilet {
-  imageUrl: string;
+  image_url: string;
   gender: string;
   name: string;
   id: string;

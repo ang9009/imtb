@@ -12,6 +12,7 @@ import PrimaryButton from "../../components/widgets/PrimaryButton";
 import { useForm, Controller } from "react-hook-form";
 import { LatLng } from "leaflet";
 import { useMutation } from "react-query";
+import { v4 as uuid } from "uuid";
 
 import { AiOutlineSmile } from "react-icons/ai";
 import { FaToiletPaper } from "react-icons/fa";
@@ -47,6 +48,13 @@ const AddToiletPage = () => {
 
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
+      const imageId = uuid();
+      const { data: image_data, error: image_error } = await supabase.storage
+        .from("images")
+        .upload(imageId, input.image.file);
+
+      if (image_error) throw new Error(image_error.message);
+
       const { data: toilet_data, error: toilet_error } = await supabase
         .from("toilets")
         .insert([
@@ -55,7 +63,7 @@ const AddToiletPage = () => {
             name: input.name,
             lat: input.coordinates.lat,
             lng: input.coordinates.lng,
-            image_url: Math.random(),
+            image_url: imageId,
           },
         ])
         .single();

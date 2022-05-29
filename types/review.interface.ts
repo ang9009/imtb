@@ -4,4 +4,5 @@ export default interface Review {
   rating: number;
   user_id: string;
   user_name: string;
+  id: string;
 }

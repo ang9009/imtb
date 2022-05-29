@@ -13,27 +13,33 @@ const ToiletPage = () => {
   const user = supabase.auth.user();
   const router = useRouter();
   const toiletId = router.query.toiletId as string;
-  const [avgRating, setAvgRating] = useState(null);
-  const [currUserRating, setCurrUserRating] = useState(null);
+
+  const [userRating, setUserRating] = useState<number>(null);
 
   const {
     data: { data: toilet, error },
   } = useQuery(["toilet", toiletId], () => getToilet(toiletId));
 
-  useEffect(() => {
-    let ratingSum = 0;
+  const getAverageRating = () => {
+    if (toilet.reviews.length === 0) return null;
 
-    toilet.reviews.forEach((review) => {
-      ratingSum += review.rating;
-    });
-
-    setAvgRating(Math.round(ratingSum / toilet.reviews.length));
-
-    //how do u do this again
-    setCurrUserRating(
-      toilet.reviews.find((review) => review.user_id === user.id)?.rating
+    const totalRating = toilet.reviews.reduce(
+      (acc, review) => acc + review.rating,
+      0
     );
-  }, [toilet]);
+
+    return totalRating / toilet.reviews.length;
+  };
+
+  useEffect(() => {
+    if (user) {
+      const userReview = toilet.reviews.find(
+        (review) => (review.user_id = user.id)
+      );
+
+      setUserRating(userReview.rating);
+    }
+  }, [user]);
 
   return (
     <>
@@ -41,61 +47,93 @@ const ToiletPage = () => {
         <p className="error-message">{error.message}</p>
       ) : (
         <div className="page-container">
+          <img
+            src={
+              supabase.storage.from("images").getPublicUrl(toilet.image_url)
+                .data.publicURL
+            }
+            alt={toilet.name}
+            className="toilet-image"
+          />
           <div className="toilet-information-container">
             <div>
               <div className="gender-tag">{capitalise(toilet.gender)}</div>
               <Rating
                 ratingValue={0}
-                initialValue={avgRating}
-                readonly={true}
+                initialValue={getAverageRating()}
+                readonly
                 size={25}
               />
             </div>
+
             <h1 className="toilet-name">{toilet.name}</h1>
+
             <div className="toilet-stats-container">
               <div className="toilet-stat">
                 <p>Your rating</p>
-                {currUserRating ? (
-                  <h1>
-                    {currUserRating}
-                    <span className="rating-denominator">/5</span>
-                  </h1>
+                {userRating ? (
+                  <div>
+                    <h1>
+                      {userRating}
+                      <span className="rating-denominator">/5</span>
+                    </h1>
+                  </div>
                 ) : (
                   <h1>N/A</h1>
                 )}
               </div>
+
               <div className="toilet-stat">
                 <p>Average overall rating</p>
-                {avgRating ? (
-                  <h1>
-                    {avgRating}
-                    <span className="rating-denominator">/5</span>
-                  </h1>
+                {getAverageRating() ? (
+                  <div>
+                    <h1>
+                      {getAverageRating()}
+                      <span className="rating-denominator">/5</span>
+                    </h1>
+                  </div>
                 ) : (
                   <h1>N/A</h1>
                 )}
               </div>
+
               <div className="toilet-stat">
                 <p>View on map</p>
                 <FaMapMarkedAlt size={35} />
               </div>
             </div>
+
             <h1 className="primary-heading">{toilet.reviews.length} Reviews</h1>
             <PrimaryButton text={"Add review"} mt={"15px"} />
           </div>
-          {toilet.reviews.map((review) => {
-            return (
-              <>
-                <h1>{review.user_name}</h1>
-                <p>{review.rating}/5</p>
+
+          <div className="reviews-container">
+            {toilet.reviews.map((review) => (
+              <div key={review.id}>
+                <div className="review-information-container">
+                  <h1>{review.user_name}</h1>
+                  <p>{review.rating}/5</p>
+                </div>
                 <p>{review.message}</p>
-              </>
-            );
-          })}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
       <style jsx>{`
+        .reviews-container {
+          margin-top: 30px;
+        }
+
+        .toilet-image {
+          width: 100%;
+          height: 500px;
+          object-fit: cover;
+          border-radius: 12px;
+          margin-top: 40px;
+        }
+
         .error-message {
           text-align: center;
           margin-top: 40px;
@@ -109,6 +147,7 @@ const ToiletPage = () => {
           display: flex;
           align-items: center;
           flex-direction: column;
+          margin-top: 20px;
         }
 
         .toilet-stats-container {
@@ -135,14 +174,24 @@ const ToiletPage = () => {
         }
 
         .toilet-stat p {
-          color: #8b8b8b;
+          color: var(--secondaryTextColor);
           margin-bottom: 5px;
           font-size: 12px;
         }
 
         .rating-denominator {
-          color: #8b8b8b;
+          color: var(--secondaryTextColor);
           font-size: 15px;
+        }
+
+        .review-information-container {
+          display: flex;
+          align-items: center;
+        }
+
+        .review-information-container p {
+          margin-left: 10px;
+          color: var(--secondaryTextColor);
         }
       `}</style>
     </>
@@ -155,6 +204,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const toiletId = context.query.toiletId as string;
 
   const queryClient = new QueryClient();
+
   await queryClient.prefetchQuery(["toilet", toiletId], () =>
     getToilet(toiletId)
   );

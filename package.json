@@ -25,12 +25,14 @@
     "react-leaflet": "^4.0.0",
     "react-query": "^3.39.0",
     "react-select": "^5.3.2",
-    "react-simple-star-rating": "^4.0.5"
+    "react-simple-star-rating": "^4.0.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/leaflet": "^1.7.10",
     "@types/node": "^17.0.35",
     "@types/react": "^18.0.9",
+    "@types/uuid": "^8.3.4",
     "typescript": "^4.6.4"
   }
 }
