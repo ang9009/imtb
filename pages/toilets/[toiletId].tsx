@@ -12,7 +12,24 @@ const ToiletPage = () => {
     data: { data: toilet, error },
   } = useQuery(["toilet", toiletId], () => getToilet(toiletId));
 
-  return <>{error ? <p>{error.message}</p> : <h1>{toilet.name}</h1>}</>;
+  return (
+    <>
+      {error ? (
+        <p className="error-message">{error.message}</p>
+      ) : (
+        <div className="page-container">
+          <h1>{toilet.name}</h1>
+        </div>
+      )}
+
+      <style jsx>{`
+        .error-message {
+          text-align: center;
+          margin-top: 40px;
+        }
+      `}</style>
+    </>
+  );
 };
 
 export default ToiletPage;

@@ -11,12 +11,15 @@ import { Rating } from "react-simple-star-rating";
 import PrimaryButton from "../../components/widgets/PrimaryButton";
 import { useForm, Controller } from "react-hook-form";
 import { LatLng } from "leaflet";
+import { useMutation } from "react-query";
 
 import { AiOutlineSmile } from "react-icons/ai";
 import { FaToiletPaper } from "react-icons/fa";
 import { GiNoseSide } from "react-icons/gi";
 import { MdCleaningServices } from "react-icons/md";
 import MapProps from "../../types/MapProps.interface";
+import supabase from "../../lib/supabase";
+import { useRouter } from "next/router";
 
 const Map = dynamic<MapProps>(() => import("../../components/ui/Map"), {
   ssr: false,
@@ -35,18 +38,66 @@ interface FormInput {
 }
 
 const AddToiletPage = () => {
+  const router = useRouter();
+  const user = supabase.auth.user();
   const [gender, setGender] = useState<Option>(null);
   const [image, setImage] = useState<{ url: string; file: File }>(null);
 
   const { handleSubmit, register, control } = useForm();
 
-  const addToilet = (input: FormInput) => {
-    console.log(input);
-  };
+  const { mutate, isLoading, isError, error } = useMutation(
+    async (input: FormInput) => {
+      const { data: toilet_data, error: toilet_error } = await supabase
+        .from("toilets")
+        .insert([
+          {
+            gender: input.gender,
+            name: input.name,
+            lat: input.coordinates.lat,
+            lng: input.coordinates.lng,
+            image_url: Math.random(),
+          },
+        ])
+        .single();
+
+      if (toilet_error) throw new Error(toilet_error.message);
+
+      const avgRating = Math.round(
+        (input.cleanlinessRating +
+          input.comfortRating +
+          input.smellRating +
+          input.equippedRating) /
+          4
+      );
+
+      const { data: review_data, error: review_error } = await supabase
+        .from("reviews")
+        .insert([
+          {
+            toilet_id: toilet_data.id,
+            message: input.review,
+            rating: avgRating,
+            user_id: user.id,
+          },
+        ]);
+
+      if (review_error) throw new Error(review_error.message);
+
+      return toilet_data;
+    },
+    {
+      onSuccess: (toilet_data) => {
+        router.push(`/toilets/${toilet_data.id}`);
+      },
+    }
+  );
 
   return (
     <>
-      <form onSubmit={handleSubmit(addToilet)} className="page-container">
+      <form
+        onSubmit={handleSubmit((input: FormInput) => mutate(input))}
+        className="page-container"
+      >
         <h1>Add toilet</h1>
 
         <p className="field-heading">Toilet name</p>
@@ -155,7 +206,12 @@ const AddToiletPage = () => {
           register={register}
         />
 
-        <PrimaryButton text={"Submit"} mt={"30px"} buttonType={"submit"} />
+        <PrimaryButton
+          disabled={isLoading}
+          text={"Submit"}
+          mt={"30px"}
+          buttonType={"submit"}
+        />
       </form>
 
       <style jsx>{`

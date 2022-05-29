@@ -1,9 +1,6 @@
 import React from "react";
 
 const Hero = () => {
-  let comments = [];
-  const mode = {};
-
   return (
     <>
       <div className="container">

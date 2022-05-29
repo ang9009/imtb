@@ -16,8 +16,6 @@ const AuthButton = () => {
     });
   }, []);
 
-  console.log(user);
-
   return (
     <>
       {user ? (
