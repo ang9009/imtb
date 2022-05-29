@@ -5,7 +5,7 @@ import { LatLng } from "leaflet";
 import osmProviders from "../../config/osm-providers";
 import useGeoLocation from "../../hooks/useGeoLocation";
 import MarkerWithRef from "../widgets/MarkerWithRef";
-import MapProps from "../../types/MapProps.interface";
+import MapProps from "../../types/mapProps.interface";
 
 const defaultCenter = {
   lat: 22.427509,

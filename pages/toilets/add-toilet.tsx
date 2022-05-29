@@ -17,7 +17,7 @@ import { AiOutlineSmile } from "react-icons/ai";
 import { FaToiletPaper } from "react-icons/fa";
 import { GiNoseSide } from "react-icons/gi";
 import { MdCleaningServices } from "react-icons/md";
-import MapProps from "../../types/MapProps.interface";
+import MapProps from "../../types/mapProps.interface";
 import supabase from "../../lib/supabase";
 import { useRouter } from "next/router";
 
@@ -78,6 +78,7 @@ const AddToiletPage = () => {
             message: input.review,
             rating: avgRating,
             user_id: user.id,
+            user_name: user.user_metadata.name,
           },
         ]);
 
@@ -98,7 +99,7 @@ const AddToiletPage = () => {
         onSubmit={handleSubmit((input: FormInput) => mutate(input))}
         className="page-container"
       >
-        <h1>Add toilet</h1>
+        <h1 className="primary-heading">Add toilet</h1>
 
         <p className="field-heading">Toilet name</p>
         <PrimaryTextInput
@@ -218,10 +219,6 @@ const AddToiletPage = () => {
         .rating-container {
           display: flex;
           align-items: center;
-        }
-
-        h1 {
-          margin-top: 40px;
         }
       `}</style>
     </>
