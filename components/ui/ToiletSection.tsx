@@ -3,7 +3,7 @@ import Link from "next/link";
 import Toilet from "../../types/toilet.interface";
 import capitalise from "../../utils/capitalise";
 import { useQuery } from "react-query";
-import getToilets from "../../queries/getToilets";
+import getAllToilets from "../../queries/getAllToilets";
 import supabase from "../../lib/supabase";
 import getAverageRating from "../../utils/getAverageRating";
 import { Rating } from "react-simple-star-rating";

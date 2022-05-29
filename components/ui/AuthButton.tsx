@@ -22,7 +22,7 @@ const AuthButton = () => {
         <Menu
           menuButton={<p className="user-name">{user.user_metadata.name}</p>}
           transition
-          menuStyle={{ marginTop: "10px" }}
+          menuStyle={{ marginTop: "10px", zIndex: "1000" }}
           align={"end"}
         >
           <MenuItem>

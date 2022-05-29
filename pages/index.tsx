@@ -3,14 +3,14 @@ import Hero from "../components/ui/Hero";
 import ToiletSection from "../components/ui/ToiletSection";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient, useQuery } from "react-query";
-import getToilets from "../queries/getToilets";
+import getAllToilets from "../queries/getAllToilets";
 import getRecentToilet from "../queries/getRecentToilet";
 import getTrendingToilets from "../queries/getTrendingToilets";
 
 const HomePage: React.FC = () => {
   const {
     data: { data: toilets },
-  } = useQuery("toilets", () => getToilets());
+  } = useQuery("toilets", () => getAllToilets());
 
   const {
     data: { data: trendingToilets },
@@ -39,7 +39,7 @@ const HomePage: React.FC = () => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery("toilets", () => getToilets());
+  await queryClient.prefetchQuery("toilets", () => getAllToilets());
   await queryClient.prefetchQuery("recentToilet", () => getRecentToilet());
   await queryClient.prefetchQuery("trendingToilets", () =>
     getTrendingToilets()

@@ -1,9 +1,13 @@
 import React, { useEffect } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import osmProviders from "../../config/osm-providers";
 import useGeoLocation from "../../hooks/useGeoLocation";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
+import { useQuery } from "react-query";
+import getAllToilets from "../../queries/getAllToilets";
+import markerIcon from "../../config/markerIcon";
+import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
 
 const Map = () => {
   const center = useGeoLocation();
@@ -16,6 +20,31 @@ const Map = () => {
     }
   }, [center]);
 
+  const {
+    data: { data: toilets },
+  } = useQuery("toilets", () => getAllToilets());
+
+  const findNearestToilet = () => {
+    const toiletsDistance: { [key: string]: number } = {};
+
+    toilets.forEach((toilet) => {
+      toiletsDistance[toilet.id] = findDistanceBetweenCoords(
+        center.coordinates.lat,
+        center.coordinates.lng,
+        toilet.lat,
+        toilet.lng
+      );
+    });
+
+    console.log(toiletsDistance);
+
+    const nearestToiletKey = Object.keys(toiletsDistance).reduce((a, b) =>
+      toiletsDistance[a] > toiletsDistance[b] ? b : a
+    );
+
+    console.log(nearestToiletKey);
+  };
+
   return (
     <>
       <div>
@@ -25,8 +54,18 @@ const Map = () => {
               url={osmProviders.maptiler.url}
               attribution={osmProviders.maptiler.attribution}
             />
+
+            {toilets.map((toilet) => (
+              <Marker
+                key={toilet.id}
+                icon={markerIcon}
+                position={{ lat: toilet.lat, lng: toilet.lng }}
+              />
+            ))}
           </MapContainer>
         )}
+
+        <button onClick={findNearestToilet}>Find Nearest Toilet</button>
       </div>
 
       <style jsx>{`

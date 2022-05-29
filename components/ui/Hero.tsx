@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "react-query";
-import getToilets from "../../queries/getToilets";
+import getAllToilets from "../../queries/getAllToilets";
 import getRecentToilet from "../../queries/getRecentToilet";
 import capitalise from "../../utils/capitalise";
 import { Rating } from "react-simple-star-rating";
