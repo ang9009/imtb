@@ -22,9 +22,12 @@ import MapProps from "../../types/mapProps.interface";
 import supabase from "../../lib/supabase";
 import { useRouter } from "next/router";
 
-const Map = dynamic<MapProps>(() => import("../../components/ui/Map"), {
-  ssr: false,
-});
+const Map = dynamic<MapProps>(
+  () => import("../../components/ui/CreateToiletMap"),
+  {
+    ssr: false,
+  }
+);
 
 interface FormInput {
   name: string;
@@ -150,7 +153,7 @@ const AddToiletPage = () => {
           )}
         />
 
-        <p className="field-heading">Review (optional)</p>
+        <p className="field-heading">Review</p>
         <div className="rating-container">
           <GiNoseSide />
           <p>Smell</p>
@@ -208,6 +211,7 @@ const AddToiletPage = () => {
           />
         </div>
 
+        <h1 className="secondary-heading">Message</h1>
         <PrimaryTextArea
           name={"review"}
           placeholder={"Leave your thoughts here..."}

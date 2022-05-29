@@ -2,15 +2,29 @@ import React, { useEffect } from "react";
 import Hero from "../components/ui/Hero";
 import ToiletSection from "../components/ui/ToiletSection";
 import { GetServerSideProps } from "next";
-import { dehydrate, QueryClient } from "react-query";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import getToilets from "../queries/getToilets";
+import getRecentToilet from "../queries/getRecentToilet";
+import getTrendingToilets from "../queries/getTrendingToilets";
 
 const HomePage: React.FC = () => {
+  const {
+    data: { data: toilets },
+  } = useQuery("toilets", () => getToilets());
+
+  const {
+    data: { data: trendingToilets },
+  } = useQuery("trendingToilets", () => getTrendingToilets());
+
   return (
     <>
       <Hero />
       <div className="page-container">
-        <ToiletSection />
+        <h1 className="primary-heading">Trending toilets</h1>
+        <ToiletSection toilets={trendingToilets} />
+
+        <h1 className="primary-heading">All toilets</h1>
+        <ToiletSection toilets={toilets} />
       </div>
 
       <style jsx>{`
@@ -26,6 +40,10 @@ const HomePage: React.FC = () => {
 export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery("toilets", () => getToilets());
+  await queryClient.prefetchQuery("recentToilet", () => getRecentToilet());
+  await queryClient.prefetchQuery("trendingToilets", () =>
+    getTrendingToilets()
+  );
 
   return {
     props: {

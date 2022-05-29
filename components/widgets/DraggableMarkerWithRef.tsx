@@ -11,7 +11,10 @@ interface Props {
   onChange: (...event: any[]) => void;
 }
 
-const MarkerWithRef: React.FC<Props> = ({ markerCoordinate, onChange }) => {
+const DraggableMarkerWithRef: React.FC<Props> = ({
+  markerCoordinate,
+  onChange,
+}) => {
   const markerRef = useRef<L.Marker>(null);
 
   const eventHandlers = () => ({
@@ -33,4 +36,4 @@ const MarkerWithRef: React.FC<Props> = ({ markerCoordinate, onChange }) => {
   );
 };
 
-export default MarkerWithRef;
+export default DraggableMarkerWithRef;

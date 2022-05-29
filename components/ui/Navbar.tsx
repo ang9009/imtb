@@ -12,7 +12,11 @@ const Navbar = () => {
           </Link>
         </div>
         <ul>
-          <li>Map</li>
+          <li>
+            <Link href={`/toilets/map`}>
+              <p>Map</p>
+            </Link>
+          </li>
           <li>
             <AuthButton />
           </li>

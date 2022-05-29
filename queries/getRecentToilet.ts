@@ -2,11 +2,17 @@ import supabase from "../lib/supabase";
 import Toilet from "../types/toilet.interface";
 import Review from "../types/review.interface";
 
-const getToilets = async () => {
+const getRecentToilet = async () => {
   const result = await supabase
     .from<Toilet & { reviews: Review[] }>("toilets")
-    .select("*,reviews(*)");
+    .select("*,reviews(*)")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  console.log(result);
+
   return result;
 };
 
-export default getToilets;
+export default getRecentToilet;

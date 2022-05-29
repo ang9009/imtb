@@ -8,6 +8,7 @@ import capitalise from "../../utils/capitalise";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import supabase from "../../lib/supabase";
 import PrimaryButton from "../../components/widgets/PrimaryButton";
+import getAverageRating from "../../utils/getAverageRating";
 
 const ToiletPage = () => {
   const user = supabase.auth.user();
@@ -20,24 +21,13 @@ const ToiletPage = () => {
     data: { data: toilet, error },
   } = useQuery(["toilet", toiletId], () => getToilet(toiletId));
 
-  const getAverageRating = () => {
-    if (toilet.reviews.length === 0) return null;
-
-    const totalRating = toilet.reviews.reduce(
-      (acc, review) => acc + review.rating,
-      0
-    );
-
-    return totalRating / toilet.reviews.length;
-  };
-
   useEffect(() => {
     if (user) {
       const userReview = toilet.reviews.find(
-        (review) => (review.user_id = user.id)
+        (review) => review.user_id === user.id
       );
 
-      setUserRating(userReview.rating);
+      setUserRating(userReview?.rating);
     }
   }, [user]);
 
@@ -60,7 +50,7 @@ const ToiletPage = () => {
               <div className="gender-tag">{capitalise(toilet.gender)}</div>
               <Rating
                 ratingValue={0}
-                initialValue={getAverageRating()}
+                initialValue={getAverageRating(toilet)}
                 readonly
                 size={25}
               />
@@ -85,10 +75,10 @@ const ToiletPage = () => {
 
               <div className="toilet-stat">
                 <p>Average overall rating</p>
-                {getAverageRating() ? (
+                {getAverageRating(toilet) ? (
                   <div>
                     <h1>
-                      {getAverageRating()}
+                      {getAverageRating(toilet)}
                       <span className="rating-denominator">/5</span>
                     </h1>
                   </div>
@@ -104,17 +94,23 @@ const ToiletPage = () => {
             </div>
 
             <h1 className="primary-heading">{toilet.reviews.length} Reviews</h1>
-            <PrimaryButton text={"Add review"} mt={"15px"} />
+            {userRating ? null : (
+              <PrimaryButton
+                text={"+ Add review"}
+                mt={"15px"}
+                onClick={() => router.push(`/toilets/add-review/${toiletId}`)}
+              />
+            )}
           </div>
 
-          <div className="reviews-container">
+          <div>
             {toilet.reviews.map((review) => (
-              <div key={review.id}>
+              <div key={review.id} className="review-container">
                 <div className="review-information-container">
                   <h1>{review.user_name}</h1>
                   <p>{review.rating}/5</p>
                 </div>
-                <p>{review.message}</p>
+                <p className="review-message">{review.message}</p>
               </div>
             ))}
           </div>
@@ -122,8 +118,8 @@ const ToiletPage = () => {
       )}
 
       <style jsx>{`
-        .reviews-container {
-          margin-top: 30px;
+        .review-container {
+          margin-top: 40px;
         }
 
         .toilet-image {
@@ -192,6 +188,12 @@ const ToiletPage = () => {
         .review-information-container p {
           margin-left: 10px;
           color: var(--secondaryTextColor);
+          font-size: 17px;
+        }
+
+        .review-message {
+          color: var(--secondaryTextColor);
+          margin-top: 10px;
         }
       `}</style>
     </>

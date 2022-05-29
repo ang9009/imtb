@@ -5,4 +5,5 @@ export default interface Toilet {
   id: string;
   lat: number;
   lng: number;
+  created_at: string;
 }

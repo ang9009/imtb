@@ -19,7 +19,7 @@ button:disabled {
 
 .page-container {
   margin: 0 auto;
-  width: 80vw;
+  width: 90vw;
 }
 
 .field-heading {
@@ -30,4 +30,9 @@ button:disabled {
 
 .primary-heading {
   margin-top: 80px;
+}
+
+.secondary-heading {
+  margin-top: 20px;
+  font-size: 20px;
 }

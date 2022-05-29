@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import "leaflet/dist/leaflet.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
+import Footer from "../components/ui/Footer";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -17,10 +18,19 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <Hydrate state={pageProps.dehydratedState}>
-          <Navbar />
-          <Component {...pageProps} />
+          <div className="main-body">
+            <Navbar />
+            <Component {...pageProps} />
+          </div>
+          <Footer />
         </Hydrate>
       </QueryClientProvider>
+
+      <style jsx>{`
+        .main-body {
+          min-height: 100vh;
+        }
+      `}</style>
     </>
   );
 }

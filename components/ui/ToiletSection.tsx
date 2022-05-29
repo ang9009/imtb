@@ -4,12 +4,11 @@ import Toilet from "../../types/toilet.interface";
 import capitalise from "../../utils/capitalise";
 import { useQuery } from "react-query";
 import getToilets from "../../queries/getToilets";
+import supabase from "../../lib/supabase";
+import getAverageRating from "../../utils/getAverageRating";
+import { Rating } from "react-simple-star-rating";
 
-const ToiletSection = () => {
-  const {
-    data: { data: toilets },
-  } = useQuery("toilets", () => getToilets());
-
+const ToiletSection = ({ toilets }) => {
   return (
     <>
       <section>
@@ -19,17 +18,28 @@ const ToiletSection = () => {
               <div className="listing-card">
                 <div className="image-container">
                   <img
-                    src="/images/placeholder.jpg"
+                    src={
+                      supabase.storage
+                        .from("images")
+                        .getPublicUrl(toilet.image_url).data.publicURL
+                    }
                     alt="Image not available"
                     className="listing-image"
                   />
                 </div>
                 <div className="listing-information">
-                  <div>
-                    <h1 className="listing-name">{capitalise(toilet.name)}</h1>
+                  <div className="rating-name-container">
+                    <h1 className="listing-name">{capitalise(toilet.name)}</h1>{" "}
                     <div className="tag">{capitalise(toilet.gender)}</div>
                   </div>
-                  <div className="rating">3/10</div>
+                  <div>
+                    <Rating
+                      ratingValue={0}
+                      initialValue={getAverageRating(toilet)}
+                      readonly
+                      size={20}
+                    />
+                  </div>
                 </div>
               </div>
             </Link>
@@ -46,6 +56,19 @@ const ToiletSection = () => {
           grid-column-gap: 30px;
           width: 100%;
           margin-bottom: 160px;
+        }
+
+        .rating-name-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        img {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
         }
 
         .listing-card {
@@ -72,10 +95,11 @@ const ToiletSection = () => {
         .tag {
           font-size: 9px;
           display: inline;
-          padding: 2px 3px;
+          padding: 3px 8px;
           font-weight: 800;
-          color: #fff;
-          background: #3f6ce1;
+          color: #3e5b70;
+          background: #85c8f9;
+          border-radius: 5px;
         }
 
         .image-container {
@@ -90,9 +114,6 @@ const ToiletSection = () => {
           height: 30%;
           z-index: 3000;
           background: #fff;
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
         }
       `}</style>
     </>
