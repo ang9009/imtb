@@ -26,13 +26,6 @@ const HomePage: React.FC = () => {
         <h1 className="primary-heading">All toilets</h1>
         <ToiletSection toilets={toilets} />
       </div>
-
-      <style jsx>{`
-        .page-container {
-          margin: 0 auto;
-          width: 80vw;
-        }
-      `}</style>
     </>
   );
 };

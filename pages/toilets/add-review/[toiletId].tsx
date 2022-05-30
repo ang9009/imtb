@@ -40,11 +40,11 @@ const AddReviewPage = () => {
         .from("reviews")
         .insert([
           {
-            toilet_id: toiletId,
-            message: input.review,
-            rating: avgRating,
-            user_id: user.id,
-            user_name: user.user_metadata.name,
+            toilet_id: toiletId, //Toilet ID
+            message: input.review, //Review message
+            rating: avgRating, //Rating calculated from the user's ratings
+            user_id: user.id, //User's id
+            user_name: user.user_metadata.name, //
           },
         ]);
     },

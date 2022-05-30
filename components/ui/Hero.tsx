@@ -6,12 +6,12 @@ import capitalise from "../../utils/capitalise";
 import { Rating } from "react-simple-star-rating";
 import getAverageRating from "../../utils/getAverageRating";
 import supabase from "../../lib/supabase";
+import Link from "next/link";
 
 const Hero = () => {
   const {
     data: { data: recentToilet },
   } = useQuery("recentToilet", () => getRecentToilet());
-  console.log(recentToilet);
 
   return (
     <>
@@ -39,17 +39,22 @@ const Hero = () => {
               ratingValue={0}
               initialValue={getAverageRating(recentToilet)}
               readonly
-              fillColor={"white"}
-              emptyColor={"black"}
+              fillColor={"gold"}
+              emptyColor={"white"}
             />
           </div>
           <div className="widgets-container">
-            <div className="toilet-map-button">
-              <h1>View toilet map</h1>
-            </div>
-            <div className="leaderboard-button">
-              <h1>View leaderboards</h1>
-            </div>
+            <Link href={"./toilets/map"}>
+              <div className="toilet-map-button">
+                <h1>View toilet map</h1>
+              </div>
+            </Link>
+
+            <Link href={"./toilets/leaderboard"}>
+              <div className="leaderboard-button">
+                <h1>View leaderboards</h1>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -68,6 +73,7 @@ const Hero = () => {
           height: 100%;
           display: grid;
           place-items: center;
+          cursor: pointer;
         }
 
         .toilet-map-button {

@@ -13,6 +13,11 @@ const Navbar = () => {
         </div>
         <ul>
           <li>
+            <Link href={`/toilets/leaderboard`}>
+              <p>Leaderboard</p>
+            </Link>
+          </li>
+          <li>
             <Link href={`/toilets/map`}>
               <p>Map</p>
             </Link>

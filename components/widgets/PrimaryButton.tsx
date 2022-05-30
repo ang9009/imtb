@@ -53,6 +53,7 @@ const PrimaryButton: React.FC<Props> = ({
           color: ${color};
           width: ${width};
           z-index: 10000;
+          display: block;
         }
       `}</style>
     </>

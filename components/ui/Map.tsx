@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import getAllToilets from "../../queries/getAllToilets";
 import markerIcon from "../../config/markerIcon";
 import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
+import PrimaryButton from "../widgets/PrimaryButton";
 
 const Map = () => {
   const center = useGeoLocation();
@@ -71,13 +72,16 @@ const Map = () => {
           </MapContainer>
         )}
 
-        <button onClick={findNearestToilet}>Find Nearest Toilet</button>
+        <PrimaryButton
+          onClick={findNearestToilet}
+          text={"Find nearest toilet"}
+          margin={"20px auto"}
+        />
       </div>
 
       <style jsx>{`
         div {
           width: 100vw;
-          height: 100vh;
           margin: 0 auto;
         }
       `}</style>

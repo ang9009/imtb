@@ -4,9 +4,11 @@ import supabase from "../../lib/supabase";
 import signOut from "../../utils/signOut";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const AuthButton = () => {
   const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     setUser(supabase.auth.user());
@@ -26,17 +28,13 @@ const AuthButton = () => {
           align={"end"}
         >
           <MenuItem>
-            <Link href={`/toilets/add-toilet`}>
-              <p>Profile</p>
-            </Link>
+            <p>Profile</p>
           </MenuItem>
-          <MenuItem>
-            <Link href={`/toilets/add-toilet`}>
-              <p>Add toilet</p>
-            </Link>
+          <MenuItem onClick={() => router.push(`/toilets/add-toilet`)}>
+            <p>Add toilet</p>
           </MenuItem>
-          <MenuItem>
-            <div onClick={signOut}>Sign out</div>
+          <MenuItem onClick={signOut}>
+            <div>Sign out</div>
           </MenuItem>
         </Menu>
       ) : (

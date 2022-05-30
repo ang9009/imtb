@@ -10,8 +10,6 @@ const getRecentToilet = async () => {
     .limit(1)
     .single();
 
-  console.log(result);
-
   return result;
 };
 

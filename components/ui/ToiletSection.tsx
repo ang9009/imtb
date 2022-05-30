@@ -56,6 +56,7 @@ const ToiletSection = ({ toilets }) => {
           grid-column-gap: 30px;
           width: 100%;
           margin-bottom: 160px;
+          margin-top: 20px;
         }
 
         .rating-name-container {
