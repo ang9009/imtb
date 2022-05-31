@@ -29,22 +29,22 @@ const AddReviewPage = () => {
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
       const avgRating = Math.round(
-        (input.cleanlinessRating +
+        (input.cleanlinessRating + //User's ratings
           input.comfortRating +
           input.smellRating +
           input.equippedRating) /
           4
-      );
+      ); //Calculating average rating from 4 criteria
 
       const { data: review_data, error: review_error } = await supabase
         .from("reviews")
         .insert([
           {
             toilet_id: toiletId, //Toilet ID
-            message: input.review, //Review message
-            rating: avgRating, //Rating calculated from the user's ratings
+            message: input.review, //Review message (accessed from text field)
+            rating: avgRating, //Average rating (from above)
             user_id: user.id, //User's id
-            user_name: user.user_metadata.name, //
+            user_name: user.user_metadata.name, //User's name
           },
         ]);
     },

@@ -7,3 +7,4 @@ export default interface Review {
   id: string;
   created_at: string;
 }
+

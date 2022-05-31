@@ -8,7 +8,7 @@ const Navbar = () => {
       <div className="nav-container">
         <div>
           <Link href={`/`}>
-            <h1 className="logo">IMTb</h1>
+            <h1 className="logo">ITDb</h1>
           </Link>
         </div>
         <ul>

@@ -14,3 +14,4 @@ const getRecentToilet = async () => {
 };
 
 export default getRecentToilet;
+

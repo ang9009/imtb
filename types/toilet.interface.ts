@@ -7,3 +7,4 @@ export default interface Toilet {
   lng: number;
   created_at: string;
 }
+

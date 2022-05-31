@@ -1,4 +1,4 @@
-//From https://bobbyhadz.com/blog/javascript-get-date-x-days-ago
+//Adapted from https://bobbyhadz.com/blog/javascript-get-date-x-days-ago
 function getDateXDaysAgo(numOfDays, date = new Date()) {
   const daysAgo = new Date(date.getTime());
 

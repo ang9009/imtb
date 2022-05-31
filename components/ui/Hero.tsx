@@ -29,7 +29,9 @@ const Hero = () => {
             <div>
               <p>Most recently posted</p>
               <div className="toilet-name-and-tag">
-                <h1>{recentToilet.name}</h1>
+                <Link href={`/toilets/${recentToilet.id}`}>
+                  <h1>{recentToilet.name}</h1>
+                </Link>
                 <div className="gender-tag">
                   {capitalise(recentToilet.gender)}
                 </div>
@@ -116,6 +118,10 @@ const Hero = () => {
         .toilet-name-and-tag {
           display: flex;
           align-items: center;
+        }
+
+        .toilet-name-and-tag h1 {
+          cursor: pointer;
         }
 
         .gender-tag {
