@@ -1,7 +1,6 @@
 import degToRad from "./degToRad";
 
-// using Haversine formula
-
+// Based on Haversine formula adapted from https://en.wikipedia.org/wiki/Haversine_formula#:~:text=The%20haversine%20formula%20determines%20the,and%20angles%20of%20spherical%20triangles.
 const findDistanceBetweenCoords = (
   lat1: number,
   lng1: number,

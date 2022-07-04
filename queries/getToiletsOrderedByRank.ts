@@ -7,3 +7,4 @@ const getToiletsOrderedByRank = async () => {
 };
 
 export default getToiletsOrderedByRank;
+

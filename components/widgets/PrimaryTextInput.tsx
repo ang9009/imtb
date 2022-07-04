@@ -70,13 +70,16 @@ const PrimaryTextInput: React.FC<Props> = ({
           transition: all 0.05s;
           width: 100%;
         }
+
         input:focus {
           outline: 1px solid #2683ff;
           outline-offset: 0;
         }
+
         input.invalid {
           outline-color: var(--errorColor);
         }
+
         .err-msg {
           margin-top: 10px;
         }

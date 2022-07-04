@@ -9,6 +9,7 @@ import "leaflet/dist/leaflet.css";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import Footer from "../components/ui/Footer";
+import Head from "next/head";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -18,6 +19,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <Hydrate state={pageProps.dehydratedState}>
+          <Head>
+            <title>ITDb</title>
+          </Head>
+
           <div className="main-body">
             <Navbar />
             <Component {...pageProps} />

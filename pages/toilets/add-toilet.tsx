@@ -13,13 +13,13 @@ import { useForm, Controller } from "react-hook-form";
 import { LatLng } from "leaflet";
 import { useMutation } from "react-query";
 import { v4 as uuid } from "uuid";
+import supabase from "../../lib/supabase";
 
 import { AiOutlineSmile } from "react-icons/ai";
 import { FaToiletPaper } from "react-icons/fa";
 import { GiNoseSide } from "react-icons/gi";
 import { MdCleaningServices } from "react-icons/md";
 import MapProps from "../../types/mapProps.interface";
-import supabase from "../../lib/supabase";
 import { useRouter } from "next/router";
 
 const Map = dynamic<MapProps>(

@@ -27,7 +27,7 @@ const AuthButton = () => {
           menuStyle={{ marginTop: "10px", zIndex: "1000" }}
           align={"end"}
         >
-          <MenuItem>
+          <MenuItem onClick={() => router.push(`/users/${user.id}`)}>
             <p>Profile</p>
           </MenuItem>
           <MenuItem onClick={() => router.push(`/toilets/add-toilet`)}>
