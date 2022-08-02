@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import osmProviders from "../../config/osm-providers";
 import useGeoLocation from "../../hooks/useGeoLocation";
@@ -10,17 +10,23 @@ import markerIcon from "../../config/markerIcon";
 import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
 import PrimaryButton from "../widgets/PrimaryButton";
 
-const Map = () => {
-  const center = useGeoLocation();
+const Map = ({ latlng }) => {
+  const toiletCoordsArray = latlng?.split("&");
+  const toiletCoordsObject = {
+    lat: toiletCoordsArray[0],
+    lng: toiletCoordsArray[1],
+  };
+
+  const currLocation = useGeoLocation();
   const router = useRouter();
 
   const mapRef = useRef<L.Map>(null);
 
   useEffect(() => {
-    if (center.loaded && center.error) {
+    if (currLocation.loaded && currLocation.error) {
       router.back();
     }
-  }, [center]);
+  }, [currLocation]);
 
   const {
     data: { data: toilets },
@@ -31,8 +37,8 @@ const Map = () => {
 
     toilets.forEach((toilet) => {
       toiletsDistance[toilet.id] = findDistanceBetweenCoords(
-        center.coordinates.lat,
-        center.coordinates.lng,
+        currLocation.coordinates.lat,
+        currLocation.coordinates.lng,
         toilet.lat,
         toilet.lng
       );
@@ -55,8 +61,12 @@ const Map = () => {
   return (
     <>
       <div>
-        {center.loaded && (
-          <MapContainer ref={mapRef} zoom={30} center={center.coordinates}>
+        {currLocation.loaded && (
+          <MapContainer
+            ref={mapRef}
+            zoom={30}
+            center={latlng ? toiletCoordsObject : currLocation.coordinates}
+          >
             <TileLayer
               url={osmProviders.maptiler.url}
               attribution={osmProviders.maptiler.attribution}
@@ -67,7 +77,16 @@ const Map = () => {
                 key={toilet.id}
                 icon={markerIcon}
                 position={{ lat: toilet.lat, lng: toilet.lng }}
-              />
+              >
+                <Tooltip
+                  direction="bottom"
+                  offset={[0, 0]}
+                  opacity={1}
+                  permanent
+                >
+                  {toilet.name}
+                </Tooltip>
+              </Marker>
             ))}
           </MapContainer>
         )}

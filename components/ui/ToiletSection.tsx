@@ -1,53 +1,62 @@
 import React from "react";
 import Link from "next/link";
-import Toilet from "../../types/toilet.interface";
 import capitalise from "../../utils/capitalise";
-import { useQuery } from "react-query";
-import getAllToilets from "../../queries/getAllToilets";
 import supabase from "../../lib/supabase";
 import getAverageRating from "../../utils/getAverageRating";
 import { Rating } from "react-simple-star-rating";
 
 const ToiletSection = ({ toilets }) => {
+  console.log("test");
+
   return (
     <>
-      <section>
-        {toilets.map((toilet) => {
-          return (
-            <Link href={`/toilets/${toilet.id}`} key={toilet.id}>
-              <div className="listing-card">
-                <div className="image-container">
-                  <img
-                    src={
-                      supabase.storage
-                        .from("images")
-                        .getPublicUrl(toilet.image_url).data.publicURL
-                    }
-                    alt="Image not available"
-                    className="listing-image"
-                  />
-                </div>
-                <div className="listing-information">
-                  <div className="rating-name-container">
-                    <h1 className="listing-name">{capitalise(toilet.name)}</h1>{" "}
-                    <div className="tag">{capitalise(toilet.gender)}</div>
-                  </div>
-                  <div>
-                    <Rating
-                      ratingValue={0}
-                      initialValue={getAverageRating(toilet)}
-                      readonly
-                      size={20}
+      {!(toilets.length === 0) ? (
+        <section>
+          {toilets.map((toilet) => {
+            return (
+              <Link href={`/toilets/${toilet.id}`} key={toilet.id}>
+                <div className="listing-card">
+                  <div className="image-container">
+                    <img
+                      src={
+                        supabase.storage
+                          .from("images")
+                          .getPublicUrl(toilet.image_url).data.publicURL
+                      }
+                      alt="Image not available"
+                      className="listing-image"
                     />
                   </div>
+                  <div className="listing-information">
+                    <div className="rating-name-container">
+                      <h1 className="listing-name">
+                        {capitalise(toilet.name)}
+                      </h1>{" "}
+                      <div className="tag">{capitalise(toilet.gender)}</div>
+                    </div>
+                    <div>
+                      <Rating
+                        ratingValue={0}
+                        initialValue={getAverageRating(toilet)}
+                        readonly
+                        size={20}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
-      </section>
+              </Link>
+            );
+          })}
+        </section>
+      ) : (
+        <p className="no-toilets-msg">No toilets found</p>
+      )}
 
       <style jsx>{`
+        .no-toilets-msg {
+          margin-top: 20px;
+        }
+
         section {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
