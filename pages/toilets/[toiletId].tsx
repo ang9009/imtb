@@ -89,7 +89,9 @@ const ToiletPage = () => {
 
               <div
                 className="toilet-stat"
-                onClick={() => router.push(`/map/${toilet.lat}&${toilet.lng}`)}
+                onClick={() =>
+                  router.push(`/map?lat=${toilet.lat}&lng=${toilet.lng}`)
+                }
               >
                 <p>View on map</p>
                 <FaMapMarkedAlt size={35} />

@@ -10,11 +10,10 @@ import markerIcon from "../../config/markerIcon";
 import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
 import PrimaryButton from "../widgets/PrimaryButton";
 
-const Map = ({ latlng }) => {
-  const toiletCoordsArray = latlng?.split("&");
+const Map = ({ lat, lng }) => {
   const toiletCoordsObject = {
-    lat: toiletCoordsArray[0],
-    lng: toiletCoordsArray[1],
+    lat: lat,
+    lng: lng,
   };
 
   const currLocation = useGeoLocation();
@@ -66,7 +65,7 @@ const Map = ({ latlng }) => {
             ref={mapRef}
             zoom={30}
             center={
-              latlng.includes("&")
+              toiletCoordsObject.lat
                 ? toiletCoordsObject
                 : currLocation.coordinates
             }

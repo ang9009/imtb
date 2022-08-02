@@ -2,20 +2,21 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
-import getAllToilets from "../../../queries/getAllToilets";
+import getAllToilets from "../../queries/getAllToilets";
 import { useRouter } from "next/router";
 
-const Index = dynamic(() => import("../../../components/ui/Map"), {
+const Index = dynamic(() => import("../../components/ui/Map"), {
   ssr: false,
 });
 
 const MapPage = () => {
   const router = useRouter();
-  const latlng = router.query?.latlng;
+  const lat = router.query?.lat;
+  const lng = router.query?.lng;
 
   return (
     <>
-      <Index latlng={latlng} />
+      <Index lat={lat} lng={lng} />
     </>
   );
 };
