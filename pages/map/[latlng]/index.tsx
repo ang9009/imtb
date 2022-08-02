@@ -11,7 +11,7 @@ const Index = dynamic(() => import("../../../components/ui/Map"), {
 
 const MapPage = () => {
   const router = useRouter();
-  const latlng = router.query.latlng;
+  const latlng = router.query?.latlng;
 
   return (
     <>

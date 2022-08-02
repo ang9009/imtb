@@ -65,7 +65,11 @@ const Map = ({ latlng }) => {
           <MapContainer
             ref={mapRef}
             zoom={30}
-            center={latlng ? toiletCoordsObject : currLocation.coordinates}
+            center={
+              latlng.includes("&")
+                ? toiletCoordsObject
+                : currLocation.coordinates
+            }
           >
             <TileLayer
               url={osmProviders.maptiler.url}
