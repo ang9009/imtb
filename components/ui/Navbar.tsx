@@ -1,15 +1,17 @@
 import React from "react";
 import AuthButton from "./AuthButton";
 import Link from "next/link";
+import Searchbar from "../widgets/Searchbar";
 
 const Navbar = () => {
   return (
     <>
       <div className="nav-container">
-        <div>
+        <div className="logo-and-searchbar-container">
           <Link href={`/`}>
             <h1 className="logo">ITDb</h1>
           </Link>
+          <Searchbar />
         </div>
         <ul>
           <li>
@@ -18,7 +20,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href={`/map/asdf`}>
+            <Link href={`/map`}>
               <p>Map</p>
             </Link>
           </li>
@@ -29,6 +31,12 @@ const Navbar = () => {
       </div>
 
       <style jsx>{`
+        .logo-and-searchbar-container {
+          display: flex;
+          align-items: center;
+          width: 50%;
+        }
+
         .nav-container {
           display: flex;
           width: 100%;

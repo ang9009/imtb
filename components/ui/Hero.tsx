@@ -46,7 +46,7 @@ const Hero = () => {
             />
           </div>
           <div className="widgets-container">
-            <Link href={"./toilets/map"}>
+            <Link href={"./map"}>
               <div className="toilet-map-button">
                 <h1>View toilet map</h1>
               </div>
