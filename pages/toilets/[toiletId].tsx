@@ -9,6 +9,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import supabase from "../../lib/supabase";
 import PrimaryButton from "../../components/widgets/PrimaryButton";
 import getAverageRating from "../../utils/getAverageRating";
+import ReviewsSection from "../../components/ui/ReviewsSection";
 
 const ToiletPage = () => {
   const user = supabase.auth.user();
@@ -109,24 +110,12 @@ const ToiletPage = () => {
           </div>
 
           <div>
-            {toilet.reviews.map((review) => (
-              <div key={review.id} className="review-container">
-                <div className="review-information-container">
-                  <h1>{review.user_name}</h1>
-                  <p>{review.rating}/5</p>
-                </div>
-                <p className="review-message">{review.message}</p>
-              </div>
-            ))}
+            <ReviewsSection reviews={toilet.reviews} />
           </div>
         </div>
       )}
 
       <style jsx>{`
-        .review-container {
-          margin-top: 40px;
-        }
-
         .toilet-image {
           width: 100%;
           height: 500px;
@@ -183,22 +172,6 @@ const ToiletPage = () => {
         .rating-denominator {
           color: var(--secondaryTextColor);
           font-size: 15px;
-        }
-
-        .review-information-container {
-          display: flex;
-          align-items: center;
-        }
-
-        .review-information-container p {
-          margin-left: 10px;
-          color: var(--secondaryTextColor);
-          font-size: 17px;
-        }
-
-        .review-message {
-          color: var(--secondaryTextColor);
-          margin-top: 10px;
         }
       `}</style>
     </>

@@ -6,8 +6,6 @@ import getAverageRating from "../../utils/getAverageRating";
 import { Rating } from "react-simple-star-rating";
 
 const ToiletSection = ({ toilets }) => {
-  console.log("test");
-
   return (
     <>
       {!(toilets.length === 0) ? (

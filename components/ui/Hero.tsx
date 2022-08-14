@@ -15,51 +15,54 @@ const Hero = () => {
 
   return (
     <>
-      <div className="container">
-        <img
-          className="hero-img"
-          src={
-            supabase.storage.from("images").getPublicUrl(recentToilet.image_url)
-              .data.publicURL
-          }
-          alt="qwer"
-        />
-        <div className="inner-container">
-          <div className="hero-description">
-            <div>
-              <p>Most recently posted</p>
-              <div className="toilet-name-and-tag">
-                <Link href={`/toilets/${recentToilet.id}`}>
-                  <h1>{recentToilet.name}</h1>
-                </Link>
-                <div className="gender-tag">
-                  {capitalise(recentToilet.gender)}
+      {recentToilet && (
+        <div className="container">
+          <img
+            className="hero-img"
+            src={
+              supabase.storage
+                .from("images")
+                .getPublicUrl(recentToilet.image_url).data.publicURL
+            }
+            alt="qwer"
+          />
+          <div className="inner-container">
+            <div className="hero-description">
+              <div>
+                <p>Most recently posted</p>
+                <div className="toilet-name-and-tag">
+                  <Link href={`/toilets/${recentToilet.id}`}>
+                    <h1>{recentToilet.name}</h1>
+                  </Link>
+                  <div className="gender-tag">
+                    {capitalise(recentToilet.gender)}
+                  </div>
                 </div>
               </div>
+              <Rating
+                ratingValue={0}
+                initialValue={getAverageRating(recentToilet)}
+                readonly
+                fillColor={"gold"}
+                emptyColor={"white"}
+              />
             </div>
-            <Rating
-              ratingValue={0}
-              initialValue={getAverageRating(recentToilet)}
-              readonly
-              fillColor={"gold"}
-              emptyColor={"white"}
-            />
-          </div>
-          <div className="widgets-container">
-            <Link href={"./map"}>
-              <div className="toilet-map-button">
-                <h1>View toilet map</h1>
-              </div>
-            </Link>
+            <div className="widgets-container">
+              <Link href={"./map"}>
+                <div className="toilet-map-button">
+                  <h1>View toilet map</h1>
+                </div>
+              </Link>
 
-            <Link href={"./toilets/leaderboard"}>
-              <div className="leaderboard-button">
-                <h1>View leaderboards</h1>
-              </div>
-            </Link>
+              <Link href={"./toilets/leaderboard"}>
+                <div className="leaderboard-button">
+                  <h1>View leaderboards</h1>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <style jsx>{`
         .widgets-container {
