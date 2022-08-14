@@ -1,9 +1,18 @@
 import React from "react";
 import supabase from "../../lib/supabase";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 const ProfilePage = () => {
-  return <>{/*<h1>{user.name}</h1>*/}</>;
+  const router = useRouter();
+  const userId = router.query.userId;
+
+  return (
+    <>
+      <p>test</p>
+      <p>test</p>
+    </>
+  );
 };
 
 export default ProfilePage;

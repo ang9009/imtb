@@ -5,6 +5,7 @@ import { dehydrate, QueryClient } from "react-query";
 import getAllToilets from "../../queries/getAllToilets";
 import { useRouter } from "next/router";
 
+//Lazy loading for map
 const Index = dynamic(() => import("../../components/ui/Map"), {
   ssr: false,
 });

@@ -80,6 +80,11 @@ const Map = ({ lat, lng }) => {
                 key={toilet.id}
                 icon={markerIcon}
                 position={{ lat: toilet.lat, lng: toilet.lng }}
+                eventHandlers={{
+                  click: () => {
+                    router.push(`/toilets/${toilet.id}`);
+                  },
+                }}
               >
                 <Tooltip
                   direction="bottom"
