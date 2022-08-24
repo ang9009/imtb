@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import getUser from "../../queries/getUser";
 import ReviewsSection from "../../components/ui/ReviewsSection";
+import getAverageRating from "../../utils/getAverageRating";
+import { Rating } from "react-simple-star-rating";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -11,7 +13,6 @@ const ProfilePage = () => {
   const {
     data: { data: user, error },
   } = useQuery(["user", userId], () => getUser(userId));
-  console.log(user);
 
   return (
     <>
@@ -19,7 +20,7 @@ const ProfilePage = () => {
         <h1 className="user-name">{user.name}</h1>
 
         <h1>{user.name}'s reviews</h1>
-        <ReviewsSection reviews={user.reviews} hasImage={true}/>
+        <ReviewsSection reviews={user.reviews} hasImage={true} />
       </section>
 
       <style jsx>{`

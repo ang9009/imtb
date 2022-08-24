@@ -1,5 +1,6 @@
 import React from "react";
 import supabase from "../../lib/supabase";
+import { Rating } from "react-simple-star-rating";
 
 const ReviewsSection = ({ reviews, hasImage }) => {
   return (
@@ -7,29 +8,47 @@ const ReviewsSection = ({ reviews, hasImage }) => {
       {reviews?.map((review) => (
         <div key={review.id} className="review-container">
           <div className="review-information-container">
-            {/*<img*/}
-            {/*  src={*/}
-            {/*    supabase.storage.from("images").getPublicUrl(review.image_url)*/}
-            {/*      .data.publicURL*/}
-            {/*  }*/}
-            {/*  alt={"unavailable"}*/}
-            {/*  className="toilet-image"*/}
-            {/*/>*/}
-            <h1>{review.user_name}</h1>
-            <p>{review.rating}/5</p>
+            {hasImage && (
+              <img
+                src={
+                  supabase.storage
+                    .from("images")
+                    .getPublicUrl(review.toilets.image_url).data.publicURL
+                }
+                alt={"unavailable"}
+                className="toilet-image"
+              />
+            )}
+            <div>
+              <div className="name-and-rating-container">
+                <h1>{review.user_name}</h1>
+                <p className="review-rating">| {review.rating}/5</p>
+              </div>
+              <Rating
+                ratingValue={0}
+                initialValue={review.rating}
+                readonly
+                fillColor={"gold"}
+                emptyColor={"white"}
+              />
+              <p className="review-message">"{review.message}"</p>
+            </div>
           </div>
-          <p className="review-message">{review.message}</p>
         </div>
       ))}
 
       <style jsx>{`
+        .name-and-rating-container {
+          display: flex;
+          align-items: center;
+        }
+
         .review-information-container {
           display: flex;
           align-items: center;
         }
 
         .review-information-container p {
-          margin-left: 10px;
           color: var(--secondaryTextColor);
           font-size: 17px;
         }
@@ -38,8 +57,21 @@ const ReviewsSection = ({ reviews, hasImage }) => {
           color: var(--secondaryTextColor);
           margin-top: 10px;
         }
+
         .review-container {
           margin-top: 40px;
+        }
+
+        .toilet-image {
+          width: 300px;
+          height: 150px;
+          object-fit: cover;
+          margin-right: 30px;
+          border-radius: 10px;
+        }
+
+        .review-rating {
+          margin-left: 10px;
         }
       `}</style>
     </>
