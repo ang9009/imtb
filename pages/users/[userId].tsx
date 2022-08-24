@@ -19,7 +19,7 @@ const ProfilePage = () => {
         <h1 className="user-name">{user.name}</h1>
 
         <h1>{user.name}'s reviews</h1>
-        <ReviewsSection reviews={user.reviews} />
+        <ReviewsSection reviews={user.reviews} hasImage={true}/>
       </section>
 
       <style jsx>{`

@@ -8,7 +8,7 @@ import { Rating } from "react-simple-star-rating";
 const ToiletSection = ({ toilets }) => {
   return (
     <>
-      {!(toilets.length === 0) ? (
+      {toilets ? (
         <section>
           {toilets.map((toilet) => {
             return (

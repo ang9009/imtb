@@ -10,6 +10,8 @@ import { AiOutlineSmile } from "react-icons/ai";
 import PrimaryButton from "../../../components/widgets/PrimaryButton";
 import { useMutation } from "react-query";
 import supabase from "../../../lib/supabase";
+import getToilet from "../../../queries/getToilet";
+import Toilet from "../../../types/toilet.interface";
 
 interface FormInput {
   smellRating: number;
@@ -25,7 +27,6 @@ const AddReviewPage = () => {
   const toiletId = router.query.toiletId as string;
 
   const { handleSubmit, register, control } = useForm();
-
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
       const avgRating = Math.round(
@@ -34,17 +35,17 @@ const AddReviewPage = () => {
           input.smellRating +
           input.equippedRating) /
           4
-      ); //Calculating average rating from 4 criteria
+      );
 
       const { data: review_data, error: review_error } = await supabase
         .from("reviews")
         .insert([
           {
-            toilet_id: toiletId, //Toilet ID
-            message: input.review, //Review message (accessed from text field)
-            rating: avgRating, //Average rating (from above)
-            user_id: user.id, //User's id
-            user_name: user.user_metadata.name, //User's name
+            toilet_id: toiletId,
+            message: input.review,
+            rating: avgRating,
+            user_id: user.id,
+            user_name: user.user_metadata.name,
           },
         ]);
     },

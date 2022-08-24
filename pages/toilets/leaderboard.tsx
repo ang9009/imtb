@@ -13,15 +13,19 @@ const LeaderboardPage = () => {
     <>
       <section className="page-container">
         <h1 className="leaderboard-heading">Toilet leaderboard</h1>
-        {rankedToilets.map((toilet, i) => {
-          return (
-            <Link href={`/toilets/${toilet.id}`} key={toilet.id}>
-              <p className="toilet">
-                {i + 1}. {toilet.name}
-              </p>
-            </Link>
-          );
-        })}
+        {rankedToilets ? (
+          rankedToilets.map((toilet, i) => {
+            return (
+              <Link href={`/toilets/${toilet.id}`} key={toilet.id}>
+                <p className="toilet">
+                  {i + 1}. {toilet.name}
+                </p>
+              </Link>
+            );
+          })
+        ) : (
+          <p>No toilets found</p>
+        )}
       </section>
 
       <style jsx>{`

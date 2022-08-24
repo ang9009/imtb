@@ -24,7 +24,7 @@ const ToiletPage = () => {
 
   useEffect(() => {
     if (user) {
-      const userReview = toilet.reviews.find(
+      const userReview = toilet?.reviews.find(
         (review) => review.user_id === user.id
       );
 
@@ -40,15 +40,15 @@ const ToiletPage = () => {
         <div className="page-container">
           <img
             src={
-              supabase.storage.from("images").getPublicUrl(toilet.image_url)
+              supabase.storage.from("images").getPublicUrl(toilet?.image_url)
                 .data.publicURL
             }
-            alt={toilet.name}
+            alt={"unavailable"}
             className="toilet-image"
           />
           <div className="toilet-information-container">
             <div>
-              <div className="gender-tag">{capitalise(toilet.gender)}</div>
+              <div className="gender-tag">{capitalise(toilet?.gender)}</div>
               <Rating
                 ratingValue={0}
                 initialValue={getAverageRating(toilet)}
@@ -57,7 +57,7 @@ const ToiletPage = () => {
               />
             </div>
 
-            <h1 className="toilet-name">{toilet.name}</h1>
+            <h1 className="toilet-name">{toilet?.name}</h1>
 
             <div className="toilet-stats-container">
               <div className="toilet-stat">
@@ -99,7 +99,9 @@ const ToiletPage = () => {
               </div>
             </div>
 
-            <h1 className="primary-heading">{toilet.reviews.length} Reviews</h1>
+            <h1 className="primary-heading">
+              {toilet?.reviews.length} Reviews
+            </h1>
             {userRating ? null : (
               <PrimaryButton
                 text={"+ Add review"}
@@ -110,7 +112,7 @@ const ToiletPage = () => {
           </div>
 
           <div>
-            <ReviewsSection reviews={toilet.reviews} />
+            <ReviewsSection reviews={toilet?.reviews} hasImage={false} />
           </div>
         </div>
       )}

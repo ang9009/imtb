@@ -13,12 +13,18 @@ const getTrendingToilets = async () => {
   if (error) throw new Error(error.message);
 
   const occurrenceMap: { [key: string]: number } = {};
- //Object with properties where the keys are the toiletId and the values are the number of occurrences
+  //Object with properties where the keys are the toiletId and the values are the number of occurrences
 
   reviews.forEach((review) => {
     occurrenceMap[review.toilet_id] =
       (occurrenceMap[review.toilet_id] || 0) + 1;
   }); //Loop over all reviews, count number of occurrences of each toiletId and add them to the occurrenceMap
+
+  Object.keys(occurrenceMap).forEach((toiletId) => {
+    if (occurrenceMap[toiletId] == 1) {
+      delete occurrenceMap[toiletId];
+    }
+  }); //Delete all entries that were just created
 
   const toiletIds = Object.keys(occurrenceMap).sort(
     (a, b) => occurrenceMap[b] - occurrenceMap[a]

@@ -1,11 +1,20 @@
 import React from "react";
+import supabase from "../../lib/supabase";
 
-const ReviewsSection = ({ reviews }) => {
+const ReviewsSection = ({ reviews, hasImage }) => {
   return (
     <>
-      {reviews.map((review) => (
+      {reviews?.map((review) => (
         <div key={review.id} className="review-container">
           <div className="review-information-container">
+            {/*<img*/}
+            {/*  src={*/}
+            {/*    supabase.storage.from("images").getPublicUrl(review.image_url)*/}
+            {/*      .data.publicURL*/}
+            {/*  }*/}
+            {/*  alt={"unavailable"}*/}
+            {/*  className="toilet-image"*/}
+            {/*/>*/}
             <h1>{review.user_name}</h1>
             <p>{review.rating}/5</p>
           </div>
