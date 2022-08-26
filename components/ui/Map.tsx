@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import osmProviders from "../../config/osm-providers";
@@ -18,7 +18,8 @@ const Map = ({ lat, lng }) => {
 
   const currLocation = useGeoLocation();
   const router = useRouter();
-
+  const [nearbyToilets, setNearbyToilets] = useState([]);
+  const [nearestToilet, setNearestToilet] = useState<String | null>();
   const mapRef = useRef<L.Map>(null);
 
   useEffect(() => {
@@ -43,6 +44,14 @@ const Map = ({ lat, lng }) => {
       );
     });
 
+    const nearbyToiletIds = Object.keys(toiletsDistance).filter(
+      (toiletId) => toiletsDistance[toiletId] <= 0.5
+    );
+
+    nearbyToiletIds.forEach((toiletId) => {
+      nearbyToilets.push(toilets.find((toilet) => toilet.id == toiletId));
+    });
+
     const nearestToiletId = Object.keys(toiletsDistance).reduce((a, b) =>
       toiletsDistance[a] > toiletsDistance[b] ? b : a
     );
@@ -50,6 +59,8 @@ const Map = ({ lat, lng }) => {
     const nearestToilet = toilets.find(
       (toilet) => toilet.id === nearestToiletId
     );
+
+    setNearestToilet(nearestToilet.name);
 
     mapRef.current.flyTo(
       { lat: nearestToilet.lat, lng: nearestToilet.lng },
@@ -104,6 +115,18 @@ const Map = ({ lat, lng }) => {
           text={"Find nearest toilet"}
           margin={"20px auto"}
         />
+        <p>
+          {nearbyToilets.length === 0 ? (
+            `Could not find nearby toilets within walking distance. Nearest toilet: ${nearestToilet}`
+          ) : (
+            <p>
+              Nearby toilets within walking distance:
+              {nearbyToilets.map((toilet) => {
+                return <p>{toilet.name}</p>;
+              })}
+            </p>
+          )}
+        </p>
       </div>
 
       <style jsx>{`

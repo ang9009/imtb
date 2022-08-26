@@ -10,7 +10,6 @@ import PrimaryTextArea from "../../components/widgets/PrimaryTextArea";
 import { Rating } from "react-simple-star-rating";
 import PrimaryButton from "../../components/widgets/PrimaryButton";
 import { useForm, Controller } from "react-hook-form";
-import { LatLng } from "leaflet";
 import { useMutation } from "react-query";
 import { v4 as uuid } from "uuid";
 import supabase from "../../lib/supabase";
@@ -21,6 +20,9 @@ import { GiNoseSide } from "react-icons/gi";
 import { MdCleaningServices } from "react-icons/md";
 import MapProps from "../../types/mapProps.interface";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const Map = dynamic<MapProps>(
   () => import("../../components/ui/CreateToiletMap"),
@@ -33,8 +35,9 @@ interface FormInput {
   name: string;
   gender: string;
   review: string;
-  coordinates: LatLng;
-  image: { url: string; file: File };
+  coordinates: { lat: number; lng: number };
+  imageUrl: string;
+  imageFile: File;
   smellRating: number;
   cleanlinessRating: number;
   equippedRating: number;
@@ -44,19 +47,49 @@ interface FormInput {
 const AddToiletPage = () => {
   const router = useRouter();
   const user = supabase.auth.user();
-  const [gender, setGender] = useState<Option>(null);
-  const [image, setImage] = useState<{ url: string; file: File }>(null);
 
-  const { handleSubmit, register, control } = useForm();
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+  } = useForm<FormInput>({
+    defaultValues: { coordinates: { lat: 22.427509, lng: 114.205905 } },
+    resolver: yupResolver(
+      yup.object().shape({
+        smellRating: yup.number().required(),
+        cleanlinessRating: yup.number().required(),
+        equippedRating: yup.number().required(),
+        comfortRating: yup.number().required(),
+        review: yup.string().required().min(40),
+        gender: yup.string().required(),
+        name: yup.string().required(),
+        imageFile: yup.mixed().required(),
+      })
+    ),
+    mode: "onSubmit",
+  });
 
+  //Submit useMutation
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
-      const imageId = uuid();
-      const { data: image_data, error: image_error } = await supabase.storage
-        .from("images")
-        .upload(imageId, input.image.file);
+      console.log("cum");
+      const avgRating = Math.round(
+        (input.cleanlinessRating +
+          input.comfortRating +
+          input.smellRating +
+          input.equippedRating) /
+          4
+      );
 
-      if (image_error) throw new Error(image_error.message);
+      if (!avgRating || !input.gender) {
+        toast(
+          "Missing rating or gender input. Please fill out all fields and try again."
+        );
+        return;
+      }
+
+      const imageId = uuid();
 
       const { data: toilet_data, error: toilet_error } = await supabase
         .from("toilets")
@@ -71,15 +104,15 @@ const AddToiletPage = () => {
         ])
         .single();
 
-      if (toilet_error) throw new Error(toilet_error.message);
+      if (toilet_error) {
+        throw new Error(toilet_error.message);
+      }
 
-      const avgRating = Math.round(
-        (input.cleanlinessRating +
-          input.comfortRating +
-          input.smellRating +
-          input.equippedRating) /
-          4
-      );
+      const { data: image_data, error: image_error } = await supabase.storage
+        .from("images")
+        .upload(imageId, input.imageFile);
+
+      if (image_error) throw new Error(image_error.message);
 
       const { data: review_data, error: review_error } = await supabase
         .from("reviews")
@@ -101,8 +134,13 @@ const AddToiletPage = () => {
       onSuccess: (toilet_data) => {
         router.push(`/toilets/${toilet_data.id}`);
       },
+      onError: () => {
+        toast("Toilet has already been posted!");
+      },
     }
   );
+
+  // console.log(errors.image.file.type);
 
   return (
     <>
@@ -118,19 +156,23 @@ const AddToiletPage = () => {
           placeholder={"E.g. “Elements Mall Toilet”"}
           name={"name"}
         />
+        <p className="error-message">{errors.name?.message}</p>
 
         <p className="field-heading">Gender</p>
         <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
-            <Select
-              options={genderOptions}
-              placeholder={"Select gender"}
-              value={genderOptions.find((o) => o.value === value)}
-              onChange={(e) => onChange(e.value)}
-              isSearchable={false}
-              styles={reactSelectStyles}
-            />
+            <>
+              <Select
+                options={genderOptions}
+                placeholder={"Select gender"}
+                value={genderOptions.find((o) => o.value === value)}
+                onChange={(e) => onChange(e.value)}
+                isSearchable={false}
+                styles={reactSelectStyles}
+              />
+              <p className="error-message">{errors.gender?.message}</p>
+            </>
           )}
           name={"gender"}
         />
@@ -146,10 +188,13 @@ const AddToiletPage = () => {
 
         <p className="field-heading">Toilet image</p>
         <Controller
-          name={"image"}
+          name={"imageFile"}
           control={control}
           render={({ field: { onChange, value } }) => (
-            <ImageDropzone value={value} onChange={onChange} />
+            <>
+              <ImageDropzone value={value} onChange={onChange} />
+              <p className="error-message">{errors.imageFile?.message}</p>
+            </>
           )}
         />
 
@@ -167,6 +212,7 @@ const AddToiletPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.smellRating?.message}</p>
         </div>
         <div className="rating-container">
           <MdCleaningServices />
@@ -181,6 +227,7 @@ const AddToiletPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.cleanlinessRating?.message}</p>
         </div>
         <div className="rating-container">
           <FaToiletPaper />
@@ -195,6 +242,7 @@ const AddToiletPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.equippedRating?.message}</p>
         </div>
         <div className="rating-container">
           <AiOutlineSmile />
@@ -209,6 +257,7 @@ const AddToiletPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.comfortRating?.message}</p>
         </div>
 
         <h1 className="secondary-heading">Message</h1>
@@ -218,6 +267,7 @@ const AddToiletPage = () => {
           height={250}
           register={register}
         />
+        <p className="error-message">{errors.review?.message}</p>
 
         <PrimaryButton
           disabled={isLoading}

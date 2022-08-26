@@ -12,7 +12,7 @@ import getAverageRating from "../../utils/getAverageRating";
 import ReviewsSection from "../../components/ui/ReviewsSection";
 
 const ToiletPage = () => {
-  const user = supabase.auth.user();
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const toiletId = router.query.toiletId as string;
 
@@ -21,6 +21,14 @@ const ToiletPage = () => {
   const {
     data: { data: toilet, error },
   } = useQuery(["toilet", toiletId], () => getToilet(toiletId));
+
+  useEffect(() => {
+    setUser(supabase.auth.user());
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user);
+    });
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -102,7 +110,7 @@ const ToiletPage = () => {
             <h1 className="primary-heading">
               {toilet?.reviews.length} Reviews
             </h1>
-            {userRating ? null : (
+            {user && userRating && (
               <PrimaryButton
                 text={"+ Add review"}
                 mt={"15px"}

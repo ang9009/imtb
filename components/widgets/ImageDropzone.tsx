@@ -6,12 +6,13 @@ type ImageType = { url: string; file: File };
 interface Props {
   value: any;
   onChange: (...event: any[]) => void;
+  error?: { message: string };
 }
 
 const ImageDropzone: React.FC<Props> = ({ value, onChange }) => {
   const onDrop = useCallback((acceptedFiles: File[] | FileList) => {
     const url = URL.createObjectURL(acceptedFiles[0]);
-    onChange({ file: acceptedFiles[0], url });
+    onChange(acceptedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -24,10 +25,7 @@ const ImageDropzone: React.FC<Props> = ({ value, onChange }) => {
   return (
     <>
       <div {...getRootProps()} className="dropzone">
-        <input
-          {...getInputProps()}
-          // onChange={(e) => onDrop(e.target.files)}
-        />
+        <input {...getInputProps()} onChange={(e) => onDrop(e.target.files)} />
         <p>Drag a file here or click to select a file</p>
         {value?.url && (
           <img src={value.url} alt={value.file?.name} className="image" />

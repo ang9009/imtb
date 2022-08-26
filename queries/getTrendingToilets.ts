@@ -24,7 +24,7 @@ const getTrendingToilets = async () => {
     if (occurrenceMap[toiletId] == 1) {
       delete occurrenceMap[toiletId];
     }
-  }); //Delete all entries that were just created
+  }); //Remove all toilets that only have 1 review (no reviews apart from the one that was made when the toilet was created)
 
   const toiletIds = Object.keys(occurrenceMap).sort(
     (a, b) => occurrenceMap[b] - occurrenceMap[a]

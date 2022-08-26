@@ -10,8 +10,9 @@ import { AiOutlineSmile } from "react-icons/ai";
 import PrimaryButton from "../../../components/widgets/PrimaryButton";
 import { useMutation } from "react-query";
 import supabase from "../../../lib/supabase";
-import getToilet from "../../../queries/getToilet";
-import Toilet from "../../../types/toilet.interface";
+import { toast } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 interface FormInput {
   smellRating: number;
@@ -26,7 +27,23 @@ const AddReviewPage = () => {
   const user = supabase.auth.user();
   const toiletId = router.query.toiletId as string;
 
-  const { handleSubmit, register, control } = useForm();
+  const {
+    handleSubmit,
+    register,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(
+      yup.object().shape({
+        smellRating: yup.number().required(),
+        cleanlinessRating: yup.number().required(),
+        equippedRating: yup.number().required(),
+        comfortRating: yup.number().required(),
+        review: yup.string().required().min(40),
+      })
+    ),
+    mode: "onSubmit",
+  });
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
       const avgRating = Math.round(
@@ -36,6 +53,13 @@ const AddReviewPage = () => {
           input.equippedRating) /
           4
       );
+
+      if (!avgRating) {
+        toast(
+          "Missing rating input. Please fill out all fields and try again."
+        );
+        return;
+      }
 
       const { data: review_data, error: review_error } = await supabase
         .from("reviews")
@@ -76,6 +100,7 @@ const AddReviewPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.smellRating?.message}</p>
         </div>
         <div className="rating-container">
           <MdCleaningServices />
@@ -90,6 +115,7 @@ const AddReviewPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.cleanlinessRating?.message}</p>
         </div>
         <div className="rating-container">
           <FaToiletPaper />
@@ -104,6 +130,7 @@ const AddReviewPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.equippedRating?.message}</p>
         </div>
         <div className="rating-container">
           <AiOutlineSmile />
@@ -118,6 +145,7 @@ const AddReviewPage = () => {
               />
             )}
           />
+          <p className="error-message">{errors.comfortRating?.message}</p>
         </div>
 
         <h1 className="secondary-heading">Message</h1>
@@ -126,6 +154,8 @@ const AddReviewPage = () => {
           placeholder={"Leave your thoughts here..."}
           height={250}
           register={register}
+          error={errors.review}
+          required={false}
         />
 
         <PrimaryButton

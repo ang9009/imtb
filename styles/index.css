@@ -7,6 +7,16 @@
   font-family: Inter, sans-serif;
 }
 
+.Toastify__progress-bar-theme--light {
+  background: var(--primaryButtonColor) !important;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
 button:disabled {
   opacity: 50%;
   cursor: not-allowed;

@@ -7,7 +7,7 @@ import L, { LatLng } from "leaflet";
 import markerIcon from "../../config/markerIcon";
 
 interface Props {
-  markerCoordinate: LatLng;
+  markerCoordinate: { lat: number; lng: number };
   onChange: (...event: any[]) => void;
 }
 

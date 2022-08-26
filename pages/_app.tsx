@@ -10,6 +10,8 @@ import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import Footer from "../components/ui/Footer";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -29,6 +31,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <Footer />
         </Hydrate>
+        <ToastContainer autoClose={2000} />
       </QueryClientProvider>
 
       <style jsx>{`

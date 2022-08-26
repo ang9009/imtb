@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { LatLng } from "leaflet";
 
 import osmProviders from "../../config/osm-providers";
 import useGeoLocation from "../../hooks/useGeoLocation";
@@ -15,11 +14,9 @@ const defaultCenter = {
 const CreateToiletMap: React.FC<MapProps> = ({ onChange, value }) => {
   const center = useGeoLocation();
 
-  const [markerCoordinates, setMarkerCoordinates] = useState<LatLng>(null);
-
   useEffect(() => {
-    if (center?.coordinates) {
-      onChange(center?.coordinates);
+    if (center.coordinates) {
+      onChange(center.coordinates);
     }
   }, [center]);
 
@@ -27,10 +24,7 @@ const CreateToiletMap: React.FC<MapProps> = ({ onChange, value }) => {
     <>
       <div>
         {center.loaded && (
-          <MapContainer
-            zoom={30}
-            center={center.error ? defaultCenter : center.coordinates}
-          >
+          <MapContainer zoom={30} center={center.coordinates || defaultCenter}>
             <TileLayer
               url={osmProviders.maptiler.url}
               attribution={osmProviders.maptiler.attribution}

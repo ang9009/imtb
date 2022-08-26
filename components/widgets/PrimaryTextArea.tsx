@@ -14,13 +14,14 @@ interface Props {
   mr?: string;
   margin?: string;
   register?: UseFormRegister<any>;
+  error?: { message: string };
 }
 
 const PrimaryTextArea: React.FC<Props> = ({
   name,
   placeholder,
   height,
-  required = true,
+  required = false,
   defaultValue = "",
   maxLength = 4000,
   mt = "10px",
@@ -29,6 +30,7 @@ const PrimaryTextArea: React.FC<Props> = ({
   mr,
   margin,
   register,
+  error,
 }) => {
   return (
     <React.Fragment>
@@ -40,6 +42,7 @@ const PrimaryTextArea: React.FC<Props> = ({
         maxLength={maxLength}
         {...(register && register(name))}
       />
+      <p className="error-message">{error?.message}</p>
 
       <style jsx>{`
         textarea {

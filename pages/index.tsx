@@ -23,8 +23,8 @@ const HomePage: React.FC = () => {
         <h1 className="primary-heading">Trending toilets</h1>
         <ToiletSection toilets={trendingToilets} />
 
-        <h1 className="primary-heading">All toilets</h1>
-        <ToiletSection toilets={toilets} />
+        <h1 className="primary-heading">Latest toilets</h1>
+        <ToiletSection toilets={toilets.slice(0, 8)} />
       </div>
     </>
   );
