@@ -12,9 +12,11 @@ import Footer from "../components/ui/Footer";
 import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "react-modal";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
+  Modal.setAppElement("#root");
 
   return (
     <>
@@ -25,7 +27,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <title>ITDb</title>
           </Head>
 
-          <div className="main-body">
+          <div className="main-body" id="root">
             <Navbar />
             <Component {...pageProps} />
           </div>

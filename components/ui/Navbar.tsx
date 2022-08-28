@@ -55,9 +55,27 @@ const Navbar = () => {
           list-style: none;
         }
 
-        ul li {
+        ul li:not(:first-child) {
           margin-left: 30px;
           cursor: pointer;
+        }
+
+        @media screen and (max-width: 700px) {
+          .nav-container {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+          }
+
+          .logo-and-searchbar-container {
+            width: 100%;
+          }
+
+          ul {
+            width: 100%;
+            margin-top: 40px;
+            justify-content: center;
+          }
         }
       `}</style>
     </>

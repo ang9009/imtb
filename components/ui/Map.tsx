@@ -9,6 +9,7 @@ import getAllToilets from "../../queries/getAllToilets";
 import markerIcon from "../../config/markerIcon";
 import findDistanceBetweenCoords from "../../utils/findDistanceBetweenCoords";
 import PrimaryButton from "../widgets/PrimaryButton";
+import Toilet from "../../types/toilet.interface";
 
 const Map = ({ lat, lng }) => {
   const toiletCoordsObject = {
@@ -20,6 +21,8 @@ const Map = ({ lat, lng }) => {
   const router = useRouter();
   const [nearbyToilets, setNearbyToilets] = useState([]);
   const [nearestToilet, setNearestToilet] = useState<String | null>();
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>();
+
   const mapRef = useRef<L.Map>(null);
 
   useEffect(() => {
@@ -49,8 +52,16 @@ const Map = ({ lat, lng }) => {
     );
 
     nearbyToiletIds.forEach((toiletId) => {
-      nearbyToilets.push(toilets.find((toilet) => toilet.id == toiletId));
+      const toilet: Toilet = toilets.find((toilet) => toilet.id == toiletId);
+      const toiletAndDistance = {
+        name: toilet.name,
+        distance: Math.round(toiletsDistance[toiletId] * 100) / 100,
+      };
+      nearbyToilets.push(toiletAndDistance);
     });
+
+    //Sort by distance
+    nearbyToilets.sort((a, b) => (a.distance > b.distance ? 1 : -1));
 
     const nearestToiletId = Object.keys(toiletsDistance).reduce((a, b) =>
       toiletsDistance[a] > toiletsDistance[b] ? b : a
@@ -66,13 +77,17 @@ const Map = ({ lat, lng }) => {
       { lat: nearestToilet.lat, lng: nearestToilet.lng },
       18
     );
+
+    setModalIsOpen(true);
   };
 
+  // @ts-ignore
   return (
     <>
       <div>
         {currLocation.loaded && (
           <MapContainer
+            style={{ width: "30%" }}
             ref={mapRef}
             zoom={30}
             center={
@@ -112,20 +127,27 @@ const Map = ({ lat, lng }) => {
 
         <PrimaryButton
           onClick={findNearestToilet}
-          text={"Find nearest toilet"}
+          text={"Find toilets near me"}
           margin={"20px auto"}
         />
         <p>
-          {nearbyToilets.length === 0 ? (
-            `Could not find nearby toilets within walking distance. Nearest toilet: ${nearestToilet}`
-          ) : (
+          {!(nearbyToilets.length === 0) && (
             <p>
               Nearby toilets within walking distance:
               {nearbyToilets.map((toilet) => {
-                return <p>{toilet.name}</p>;
+                return (
+                  <p>
+                    {toilet.name} ({toilet.distance * 1000}m)
+                  </p>
+                );
               })}
             </p>
           )}
+        </p>
+        <p>
+          {nearbyToilets.length === 0 &&
+            nearestToilet &&
+            `Could not find nearby toilets within walking distance. Nearest toilet: ${nearestToilet}`}
         </p>
       </div>
 

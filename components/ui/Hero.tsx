@@ -79,6 +79,7 @@ const Hero = () => {
           display: grid;
           place-items: center;
           cursor: pointer;
+          text-align: center;
         }
 
         .toilet-map-button {
@@ -136,6 +137,18 @@ const Hero = () => {
           color: #3e5b70;
           background: #85c8f9;
           border-radius: 5px;
+        }
+
+        @media screen and (max-width: 700px) {
+          .widgets-container {
+            flex-direction: column;
+            height: 200px;
+          }
+
+          .widgets-container div {
+            width: 100%;
+            height: 50%;
+          }
         }
       `}</style>
     </>

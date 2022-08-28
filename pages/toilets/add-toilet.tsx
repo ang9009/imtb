@@ -83,7 +83,7 @@ const AddToiletPage = () => {
       );
 
       if (!avgRating || !input.gender) {
-        toast(
+        toast.error(
           "Missing rating or gender input. Please fill out all fields and try again."
         );
         return;
@@ -135,7 +135,7 @@ const AddToiletPage = () => {
         router.push(`/toilets/${toilet_data.id}`);
       },
       onError: () => {
-        toast("Toilet has already been posted!");
+        toast.error("Toilet has already been posted!");
       },
     }
   );
@@ -231,7 +231,7 @@ const AddToiletPage = () => {
         </div>
         <div className="rating-container">
           <FaToiletPaper />
-          <p>Equipped</p>
+          <p>Amenities</p>
           <Controller
             control={control}
             name="equippedRating"

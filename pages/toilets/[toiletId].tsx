@@ -110,7 +110,7 @@ const ToiletPage = () => {
             <h1 className="primary-heading">
               {toilet?.reviews.length} Reviews
             </h1>
-            {user && userRating && (
+            {user && !userRating && (
               <PrimaryButton
                 text={"+ Add review"}
                 mt={"15px"}

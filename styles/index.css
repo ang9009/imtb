@@ -7,10 +7,6 @@
   font-family: Inter, sans-serif;
 }
 
-.Toastify__progress-bar-theme--light {
-  background: var(--primaryButtonColor) !important;
-}
-
 .error-message {
   color: red;
   font-size: 12px;
@@ -46,3 +42,30 @@ button:disabled {
   margin-top: 20px;
   font-size: 20px;
 }
+
+/*React modal styles*/
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: 0.2s all;
+  background-color: rgba(0, 0, 0, 0) !important;
+  z-index: 999999999999;
+}
+
+.ReactModal__Overlay--after-open{
+  opacity: 1;
+  transition: 0.2s all;
+}
+
+/*Controls modal animation. Transform style is also in reactModalStyles.ts*/
+.ReactModal__Content--after-open {
+  transform: translate(-50%, -50%) scale(1) !important;
+  z-index: 10000;
+}
+
+.ReactModal__Overlay--before-close{
+  opacity: 0;
+}
+
+/*.leaflet-container {*/
+/*  width: 70% !important;*/
+/*}*/

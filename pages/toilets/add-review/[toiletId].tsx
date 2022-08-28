@@ -119,7 +119,7 @@ const AddReviewPage = () => {
         </div>
         <div className="rating-container">
           <FaToiletPaper />
-          <p>Equipped</p>
+          <p>Amenities</p>
           <Controller
             control={control}
             name="equippedRating"

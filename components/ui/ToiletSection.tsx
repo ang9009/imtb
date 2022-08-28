@@ -66,6 +66,24 @@ const ToiletSection = ({ toilets }) => {
           margin-top: 20px;
         }
 
+        @media screen and (max-width: 1000px) {
+          section {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+
+        @media screen and (max-width: 700px) {
+          section {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media screen and (max-width: 500px) {
+          section {
+            grid-template-columns: repeat(1, 1fr);
+          }
+        }
+
         .rating-name-container {
           display: flex;
           align-items: center;

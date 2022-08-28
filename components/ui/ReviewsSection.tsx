@@ -1,6 +1,7 @@
 import React from "react";
 import supabase from "../../lib/supabase";
 import { Rating } from "react-simple-star-rating";
+import Link from "next/link";
 
 const ReviewsSection = ({ reviews, hasImage }) => {
   return (
@@ -9,15 +10,17 @@ const ReviewsSection = ({ reviews, hasImage }) => {
         <div key={review.id} className="review-container">
           <div className="review-information-container">
             {hasImage && (
-              <img
-                src={
-                  supabase.storage
-                    .from("images")
-                    .getPublicUrl(review.toilets.image_url).data.publicURL
-                }
-                alt={"unavailable"}
-                className="toilet-image"
-              />
+              <Link href={`/toilets/${review.toilet_id}`}>
+                <img
+                  src={
+                    supabase.storage
+                      .from("images")
+                      .getPublicUrl(review.toilets.image_url).data.publicURL
+                  }
+                  alt={"unavailable"}
+                  className="toilet-image"
+                />
+              </Link>
             )}
             <div>
               <div className="name-and-rating-container">
@@ -56,6 +59,7 @@ const ReviewsSection = ({ reviews, hasImage }) => {
         .review-message {
           color: var(--secondaryTextColor);
           margin-top: 10px;
+          word-wrap: anywhere;
         }
 
         .review-container {
@@ -68,6 +72,7 @@ const ReviewsSection = ({ reviews, hasImage }) => {
           object-fit: cover;
           margin-right: 30px;
           border-radius: 10px;
+          cursor: pointer;
         }
 
         .review-rating {

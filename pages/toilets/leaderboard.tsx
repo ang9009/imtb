@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import getToiletsOrderedByRank from "../../queries/getToiletsOrderedByRank";
 import Link from "next/link";
+import getAverageRating from "../../utils/getAverageRating";
 
 const LeaderboardPage = () => {
   const {
@@ -33,6 +34,7 @@ const LeaderboardPage = () => {
           font-size: 35px;
           text-align: center;
           margin-top: 30px;
+          margin-bottom: 40px;
         }
 
         .toilet {
