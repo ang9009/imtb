@@ -55,9 +55,12 @@ const Navbar = () => {
           list-style: none;
         }
 
+        ul li {
+          cursor: pointer;
+        }
+
         ul li:not(:first-child) {
           margin-left: 30px;
-          cursor: pointer;
         }
 
         @media screen and (max-width: 700px) {

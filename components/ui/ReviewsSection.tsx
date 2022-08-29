@@ -24,7 +24,9 @@ const ReviewsSection = ({ reviews, hasImage }) => {
             )}
             <div>
               <div className="name-and-rating-container">
-                <h1>{review.user_name}</h1>
+                <Link href={`/users/${review.user_id}`}>
+                  <h1 className="username">{review.user_name}</h1>
+                </Link>
                 <p className="review-rating">| {review.rating}/5</p>
               </div>
               <Rating
@@ -77,6 +79,10 @@ const ReviewsSection = ({ reviews, hasImage }) => {
 
         .review-rating {
           margin-left: 10px;
+        }
+
+        .username {
+          cursor: pointer;
         }
       `}</style>
     </>

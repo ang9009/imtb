@@ -8,6 +8,7 @@ const getSearchedToilets = async (query: string) => {
     .select("*,reviews(*)")
     .textSearch("name", query, {
       type: "websearch",
+      config: "english",
     });
 
   return result;
