@@ -46,6 +46,7 @@ const ReviewsSection = ({ reviews, hasImage }) => {
         .name-and-rating-container {
           display: flex;
           align-items: center;
+          margin-top: 20px;
         }
 
         .review-information-container {
@@ -83,6 +84,12 @@ const ReviewsSection = ({ reviews, hasImage }) => {
 
         .username {
           cursor: pointer;
+        }
+
+        @media screen and (max-width: 700px) {
+          .review-information-container {
+            flex-direction: column;
+          }
         }
       `}</style>
     </>

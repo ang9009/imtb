@@ -61,9 +61,20 @@ const AddToiletPage = () => {
         cleanlinessRating: yup.number().required(),
         equippedRating: yup.number().required(),
         comfortRating: yup.number().required(),
-        review: yup.string().required().min(40),
+        review: yup
+          .string()
+          .test("isNumber", "toilet name cannot only contain numbers", (name) =>
+            isNaN(parseInt(name))
+          )
+          .required(),
         gender: yup.string().required(),
-        name: yup.string().required(),
+        name: yup
+          .string()
+          .test("isNumber", "Toilet cannot be only numbers", (name) =>
+            isNaN(parseInt(name))
+          )
+          .required()
+          .max(30),
         imageFile: yup.mixed().required(),
       })
     ),
@@ -73,7 +84,6 @@ const AddToiletPage = () => {
   //Submit useMutation
   const { mutate, isLoading, isError, error } = useMutation(
     async (input: FormInput) => {
-      console.log("cum");
       const avgRating = Math.round(
         (input.cleanlinessRating +
           input.comfortRating +
@@ -139,8 +149,6 @@ const AddToiletPage = () => {
       },
     }
   );
-
-  // console.log(errors.image.file.type);
 
   return (
     <>

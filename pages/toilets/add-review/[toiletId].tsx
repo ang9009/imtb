@@ -39,7 +39,12 @@ const AddReviewPage = () => {
         cleanlinessRating: yup.number().required(),
         equippedRating: yup.number().required(),
         comfortRating: yup.number().required(),
-        review: yup.string().required().min(40),
+        review: yup
+          .string()
+          .test("isNumber", "Toilet cannot be only numbers", (name) =>
+            isNaN(parseInt(name))
+          )
+          .required(),
       })
     ),
     mode: "onSubmit",

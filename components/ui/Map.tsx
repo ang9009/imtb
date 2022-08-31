@@ -130,7 +130,7 @@ const Map = ({ lat, lng }) => {
           text={"Find toilets near me"}
           margin={"20px auto"}
         />
-        <p>
+        <p className="nearest-toilet-output">
           {!(nearbyToilets.length === 0) && (
             <p>
               Nearby toilets within walking distance:
@@ -144,7 +144,7 @@ const Map = ({ lat, lng }) => {
             </p>
           )}
         </p>
-        <p>
+        <p className="nearest-toilet-output">
           {nearbyToilets.length === 0 &&
             nearestToilet &&
             `Could not find nearby toilets within walking distance. Nearest toilet: ${nearestToilet}`}
@@ -155,6 +155,11 @@ const Map = ({ lat, lng }) => {
         div {
           width: 100vw;
           margin: 0 auto;
+        }
+
+        .nearest-toilet-output {
+          width: 100%;
+          text-align: center;
         }
       `}</style>
     </>

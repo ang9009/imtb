@@ -27,6 +27,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <title>ITDb</title>
           </Head>
 
+          <div className="overlay">
+            <p>
+              Warning: the size of your device's screen is too small to view
+              this website.
+            </p>
+          </div>
           <div className="main-body" id="root">
             <Navbar />
             <Component {...pageProps} />
@@ -39,6 +45,28 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <style jsx>{`
         .main-body {
           min-height: 100vh;
+        }
+
+        .overlay {
+          display: none;
+        }
+
+        @media screen and (max-width: 300px) {
+          .main-body {
+            display: none;
+          }
+
+          .overlay {
+            display: block;
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            padding: 40px;
+            background: #fff;
+          }
         }
       `}</style>
     </>

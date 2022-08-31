@@ -149,6 +149,10 @@ const Hero = () => {
             width: 100%;
             height: 50%;
           }
+
+          .hero-description {
+            flex-direction: column;
+          }
         }
       `}</style>
     </>
