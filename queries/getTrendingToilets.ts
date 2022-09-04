@@ -19,12 +19,7 @@ const getTrendingToilets = async () => {
     occurrenceMap[review.toilet_id] =
       (occurrenceMap[review.toilet_id] || 0) + 1;
   }); //Loop over all reviews, count number of occurrences of each toiletId and add them to the occurrenceMap
-
-  Object.keys(occurrenceMap).forEach((toiletId) => {
-    if (occurrenceMap[toiletId] == 1) {
-      delete occurrenceMap[toiletId];
-    }
-  }); //Remove all toilets that only have 1 review (no reviews apart from the one that was made when the toilet was created)
+  console.log(occurrenceMap);
 
   const toiletIds = Object.keys(occurrenceMap).sort(
     (a, b) => occurrenceMap[b] - occurrenceMap[a]

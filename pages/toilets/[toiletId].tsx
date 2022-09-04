@@ -141,6 +141,7 @@ const ToiletPage = () => {
 
         .toilet-name {
           margin-top: 20px;
+          text-align: center;
         }
 
         .toilet-information-container {

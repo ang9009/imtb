@@ -41,8 +41,10 @@ const AddReviewPage = () => {
         comfortRating: yup.number().required(),
         review: yup
           .string()
-          .test("isNumber", "Toilet cannot be only numbers", (name) =>
-            isNaN(parseInt(name))
+          .test(
+            "isNumber",
+            "review message cannot only contain numbers",
+            (name) => isNaN(parseInt(name))
           )
           .required(),
       })

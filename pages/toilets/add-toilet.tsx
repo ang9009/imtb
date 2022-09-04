@@ -63,14 +63,14 @@ const AddToiletPage = () => {
         comfortRating: yup.number().required(),
         review: yup
           .string()
-          .test("isNumber", "toilet name cannot only contain numbers", (name) =>
+          .test("isNumber", "review cannot only contain numbers", (name) =>
             isNaN(parseInt(name))
           )
           .required(),
         gender: yup.string().required(),
         name: yup
           .string()
-          .test("isNumber", "Toilet cannot be only numbers", (name) =>
+          .test("isNumber", "toilet name cannot only contain numbers", (name) =>
             isNaN(parseInt(name))
           )
           .required()

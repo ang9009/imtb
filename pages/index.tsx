@@ -15,6 +15,7 @@ const HomePage: React.FC = () => {
   const {
     data: { data: trendingToilets },
   } = useQuery("trendingToilets", () => getTrendingToilets());
+  console.log(trendingToilets);
 
   return (
     <>
