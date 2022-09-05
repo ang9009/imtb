@@ -13,15 +13,16 @@ import ReviewsSection from "../../components/ui/ReviewsSection";
 
 const ToiletPage = () => {
   const [user, setUser] = useState(null);
+  const [userRating, setUserRating] = useState<number>(null);
   const router = useRouter();
   const toiletId = router.query.toiletId as string;
 
-  const [userRating, setUserRating] = useState<number>(null);
-
+  //Fetches toilet data
   const {
     data: { data: toilet, error },
   } = useQuery(["toilet", toiletId], () => getToilet(toiletId));
 
+  //Updates user object/state
   useEffect(() => {
     setUser(supabase.auth.user());
 
